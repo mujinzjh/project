@@ -1,13 +1,17 @@
 <template>
   <div class="app">
     <div>
-      <h1>童之年商城</h1>
-      <search></search>
+       <h1 style="text-align:center">童之年商城</h1>
+      <Affix>
+      <Index-search></Index-search>
+    </Affix>
+  
 
       <Swiper></Swiper>
+
       <div class="cate">
         <ul class="myul">
-          <li v-for="(infos,index) in info" :key="index" class="myli">
+          <li v-for="(infos,index) in info" :key="index" class="myli" @click="sendID(infos.cid)">
             <img :src="infos.imgs" class="cateimgs" />
             {{infos.catename}}
           </li>
@@ -18,15 +22,15 @@
       <!-- 推荐商品 -->
 
       <div class="recommend">
-        <h2>--爆款推荐--</h2>
+        <h2 style="text-align:center">--爆款推荐--</h2>
 
         <!-- 推荐的 -->
         <ul class="remUl">
           <img src="../../public/img/timg (9).jpg" />
           <div style="width:65%;height:300px;">
-            <li v-for="(goodsmeg,index) in goodinfo" :key="index" class="remli">
+            <li v-for="(goodsmeg,index) in goodinfo" :key="index" class="remli" @click="goTO(goodsmeg.gid)">
               <div style class="remIn">
-                <span>{{goodsmeg.name}}</span>
+                <span style="text-align:center">{{goodsmeg.name}}</span>
                 <span style="color:red;">￥{{goodsmeg.price}}</span>
               </div>
 
@@ -40,25 +44,18 @@
     </div>
 
     <!-- 喜欢 -->
-     <!-- <h2>--爆款推荐--</h2> -->
-      <h2 class="liketitle">猜你喜欢</h2>
+    <!-- <h2>--爆款推荐--</h2> -->
+    <h2 class="liketitle" style="text-align:center">猜你喜欢</h2>
     <div class="likeGood">
       <ul class="likeGoodUl">
-        <li v-for="(el,index) in LikeGoodsInfo" :key="index" class="likeGoodLi">
-          <img :src="el.img" alt="" class="liImg">
+        <li v-for="(el,index) in LikeGoodsInfo" :key="index" class="likeGoodLi" @click="goTO(el.gid)">
+          <img :src="el.img" alt class="liImg" />
           <div>{{el.name}}</div>
           <div class="GoodPrice">
-           <span style="color:red">￥{{el.price}}</span> 
-           <span style="color:gray;font-size:0.3rem;line-height:250%">{{el.num}}已付款</span> 
-          
-            </div>
-
-
-
+            <span style="color:red">￥{{el.price}}</span>
+            <span style="color:gray;font-size:0.3rem;line-height:250%">库存{{el.num}}件</span>
+          </div>
         </li>
-
-
-
       </ul>
     </div>
 
@@ -72,10 +69,20 @@ export default {
     return {
       info: [],
       goodinfo: [],
-      LikeGoodsInfo:[]
+      LikeGoodsInfo: [],
+      img:''
     };
   },
   methods: {
+    goTO(gid){
+      console.log(gid)
+      this.$router.push({path:"/Info",query:{gid:gid}})
+    },
+    sendID(cid) {
+      // console.log(cid);
+      this.$router.push({ path: "/cate" ,query:{cid:cid}});
+    },
+
     getRem: function() {
       this.axios
         .get("/Goods")
@@ -88,20 +95,22 @@ export default {
         });
     },
 
-  getLikeGoods:function() {
-     this.axios
+    getLikeGoods: function() {
+      this.axios
         .get("/Goods/getInfo")
         .then(response => {
-          console.log(response);
+          response.data.forEach((el)=>{
+            el.img=el.img.split(",")[0]
+          })
           this.LikeGoodsInfo = response.data;
         })
         .catch(function(error) {
           console.log(error);
         });
-  }
-
+    }
   },
   created() {
+  
     this.getRem();
     this.getLikeGoods();
     this.axios
@@ -121,15 +130,15 @@ export default {
 h1 {
   font-size: 0.5rem;
 }
-.GoodPrice{
+.GoodPrice {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
-.liImg{
+.liImg {
   width: 100%;
   height: 80%;
 }
-.likeGoodLi{
+.likeGoodLi {
   width: 48%;
   min-height: 360px;
   max-height: 400px;
@@ -137,20 +146,20 @@ h1 {
   margin-bottom: 2%;
   font-size: 0.5rem;
 }
-.likeGoodUl{
+.likeGoodUl {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-.liketitle{
- margin-bottom: 2rem;
+.liketitle {
+  margin-bottom: 2rem;
   margin-top: -1.5rem;
 }
-.likeGood{
- margin-bottom: 2rem;
+.likeGood {
+  margin-bottom: 2rem;
   margin-top: -1.8rem;
-  width:100%;
+  width: 100%;
   background-color: #f6f6f6;
 }
 .cate {
@@ -174,13 +183,14 @@ h1 {
   width: 25%;
   height: 48%;
   font-size: 0.35rem;
+  text-align: center;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
 }
 .cateimgs {
   /* width: 80%; */
-  height: 70%;
+  height: 67%;
 }
 /* h2{
   margin-top: 200px;
@@ -221,6 +231,5 @@ h1 {
   flex-direction: column;
   justify-content: space-around;
 }
-.remIn > span {
-}
+
 </style>

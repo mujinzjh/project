@@ -23,7 +23,7 @@ let upload = multer({
 })
 
 router.post('/', upload.single('file'), (req, res) => {
-    // console.log(req.file);
+    console.log(req.file);
    let data={
        "code":0,
        "msg":'',
@@ -36,7 +36,7 @@ router.post('/', upload.single('file'), (req, res) => {
 
 
 router.post('/mul', upload.array('file'), (req, res) => {
-//   console.log(req.files);
+  console.log(req.files);
   
    let data= {
         "errno": 0,

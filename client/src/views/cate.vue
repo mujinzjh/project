@@ -1,23 +1,25 @@
 <template>
   <div class="app">
-    <h1>商品列表</h1>
-    <search></search>
-    <van-tabs @click="clickType">
-      <van-tab v-for="(el,index) in cateInfo" :title="el.catename" :key="index" :name="el.cid">
-       <ul class="myul">
-          <li class="myli" v-for="(els,ind) in listInfo" :key="ind">
-            <div style="display:inline-block;">
-              <img :src="els.img" style="width:100px;height:100px;"/>
+    <h1 style="text-align:center">商品列表</h1>
+    <Affix>
+      <Index-search></Index-search>
+    </Affix>
+    <van-tabs @click="clickType"  v-model="cid">
+      <van-tab v-for="(el,index) in cateInfo" :title="el.catename" :key="index" :name="el.cid" >
+        <ul class="myul">
+          <li class="myli" v-for="(els,ind) in listInfo" :key="ind" @click="goGoods(els.gid)">
+            <div class="left">
+              <img :src="img" style="width:100px;height:100px;" />
             </div>
-            <div style="display:inline-block;">
+            <div class="right">
               <span>{{els.name}}</span>
-              <span>{{els.price}}</span>
+              <span style="color:red;">￥{{els.price}}</span>
             </div>
           </li>
         </ul>
       </van-tab>
     </van-tabs>
-     
+
     <top-Bar></top-Bar>
   </div>
 </template>
@@ -28,14 +30,18 @@ export default {
     return {
       cateInfo: [],
       cid: 1,
-      listInfo: []
+      listInfo: [],
+      img:""
     };
   },
+
   methods: {
     clickType(name) {
       this.cid = name;
-      console.log(this.cid);
       this.getGoods();
+    },
+    goGoods(gid){
+      this.$router.push({path:"/info",query:{gid:gid}})
     },
     getCate: function() {
       this.axios
@@ -43,6 +49,7 @@ export default {
         .then(response => {
           console.log(response);
           this.cateInfo = response.data;
+          
         })
         .catch(function(error) {
           console.log(error);
@@ -53,9 +60,12 @@ export default {
         .post("/Goods/getGoosInfoByCid", {
           cid: this.cid
         })
-        .then((response)=> {
+        .then(response => {
           console.log(response);
           this.listInfo = response.data;
+          response.data.forEach(el=>{
+            this.img=el.img.split(",")[0];
+          })
         })
         .catch(function(error) {
           console.log(error);
@@ -64,8 +74,14 @@ export default {
   },
   created() {
     this.getCate();
-    console.log(this.cid);
     this.getGoods();
+    this.clickType(this.$route.query.cid)
+    // console.log(this.$route.query.cid);
+    // this.cid = this.$route.query.cid;
+    
+    // console.log(this.cid);
+
+  
   }
 };
 </script>
@@ -76,15 +92,31 @@ export default {
     height: 400px;
     background-color: aqua;
 } */
-.myul{
-    width: 100%;
-    /* background-color: aquamarine; */
+
+.myul {
+  width: 100%;
+  /* background-color: aquamarine; */
 }
-.myli{
-    width: 100%;
-    font-size: 0.5rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.myli {
+  width: 100%;
+  font-size: 0.5rem;
+  margin-top: 2%;
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  box-shadow: 1px 1px 5px #888;
+  /* justify-content: space-around; */
+}
+.left {
+  display: flex;
+  align-items: center;
+}
+.right {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+  padding-left: 5%;
 }
 </style>

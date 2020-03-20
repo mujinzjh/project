@@ -1,13 +1,35 @@
 <template>
   <div id="app">
       
-      <router-link to="/index"></router-link> 
+      <router-link to="/index" ></router-link> 
      
  
-    <router-view/>
+    <router-view v-if="isRouterAlive"></router-view>
   </div>
 </template>
-
+<script>
+export default{
+  provide(){
+    return{
+      reload:this.reload
+    }
+  },
+  data () {
+    return {
+      isRouterAlive:true
+    }
+  },
+  methods: {
+    reload(){
+      var that=this;
+      that.isRouterAlive=false;
+      that.$nextTick(function(){
+        that.isRouterAlive=true;
+      })
+    }
+  }
+}
+</script>
 <style lang="scss">
 html{
   background-color:#f6f6f6;
@@ -16,7 +38,8 @@ html{
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  // text-align: center;
+
   color: #2c3e50;
 }
 

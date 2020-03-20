@@ -8,6 +8,12 @@ router.get("/",(req,res)=>{
         res.json(results)
     })
 })
+router.get("/getAllcate",(req,res)=>{
+    let cateModel=new CateModel();
+    cateModel.getAllcate((results)=>{
+        res.json(results)
+    })
+})
 
 
 module.exports=router;
