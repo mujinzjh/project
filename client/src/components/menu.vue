@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="menu-nav-aside">
     <el-row class="tac">
       <el-col :span="24">
         <el-menu
@@ -30,18 +30,6 @@
             <el-menu-item index="/backManagementMain/goodsAdd">我的商品</el-menu-item>
             <el-menu-item index="/backManagementMain/goodsinfo">所有商品</el-menu-item>
           </el-submenu>
-          <el-submenu index="/">
-            <template slot="title">
-              <i class="el-icon-document"></i>
-              <span>文件管理</span>
-            </template>
-          </el-submenu>
-          <el-submenu index="4">
-            <template slot="title">
-              <i class="el-icon-setting"></i>
-              <span>基本设置</span>
-            </template>
-          </el-submenu>
         </el-menu>
       </el-col>
     </el-row>
@@ -71,6 +59,9 @@ export default {
   margin: 0;
   padding: 0;
 }
+.menu-nav-aside{
+  overflow: hidden;
+}
 .title{
     color: #fff;
 }
@@ -78,7 +69,7 @@ export default {
     /* height: 750px; */
 }
 .tac {
-  height: 877px;
+  height: 800px;
 
  
 }

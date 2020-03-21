@@ -39,7 +39,7 @@ export default {};
   background-color: #333;
   color: #333;
   text-align: center;
-  /* line-height: 200px; */
+  line-height: 200px;
 }
 .el-main {
   background-color: #fff;
@@ -53,11 +53,11 @@ body > .el-container {
 
 .el-container:nth-child(5) .el-aside,
 .el-container:nth-child(6) .el-aside {
-  /* line-height: 260px; */
+  line-height: 260px;
 }
 
 .el-container:nth-child(7) .el-aside {
-  /* line-height: 320px; */
+  line-height: 320px;
 }
 .el-header {
   padding: 0;

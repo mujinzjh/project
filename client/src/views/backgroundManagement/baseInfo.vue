@@ -28,9 +28,10 @@
     </div>
     <div class="shopGood-show">
       <h2>商品信息展示</h2>
+      <span @click="myExpend"><Icon :type="!isExpend?'ios-arrow-down':'ios-arrow-up'" /><span v-text="!isExpend?'展开':'收缩'"></span></span>
     </div>
 
-<div>
+<div v-show="isExpend">
   <my-chat></my-chat>
 </div>
 
@@ -43,7 +44,8 @@ export default {
     return {
       date: "",
       username: username,
-      src: ""
+      src: "",
+      isExpend:false
     };
   },
   created() {},
@@ -51,6 +53,9 @@ export default {
     this.getDate();
   },
   methods: {
+    myExpend(){
+      this.isExpend=!this.isExpend;
+    },
     getDate: function() {
       var that = this,
         date = localStorage.getItem("loginTime");
@@ -127,5 +132,8 @@ export default {
   margin-top: 10px;
   padding-left: 20px;
   border-bottom: 1px solid #51A1a1;
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
 }
 </style>

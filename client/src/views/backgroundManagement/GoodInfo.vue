@@ -45,6 +45,7 @@
             <Icon class="ivu-icon-ios-close" @click="onCloseViewClick"></Icon>
         </div>
         <div style="margin:0 8px">
+            <h2>商品基本信息</h2>
             <div class="base">
               <div class="one-temp">
                 <span class="label">商品名称</span>
@@ -63,15 +64,16 @@
                 <span class="content">{{shopDetail.num}}</span>
               </div>
             </div>
+            <h2>商品的状态及详细信息</h2>
             <div class="base">
               <div class="one-temp">
                 <span class="label">商品状态</span>
-                <span class="content" :style="{'color':shopDetail.status?'green':'yellow'}">{{shopDetail.statusShow}}</span>
+                <span class="content" :style="{'color':shopDetail.status?'#00EE76':'#EE7621'}">{{shopDetail.statusShow}}</span>
               </div>
             </div>
             <div class="base">
               <div class="one-temp">
-                <span class="label">添加商品</span>
+                <span class="label">添加时间</span>
                 <span class="content">{{shopDetail.time}}</span>
               </div>
             </div>
@@ -350,5 +352,18 @@ export default {
   overflow: hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
+}
+h2{
+  font-weight: normal;
+}
+.modal-show h2::before{
+    content: '';
+    position: relative;
+    display: inline-block;
+    border-left: 4px solid #21a5ff;
+    background: #21a5ff;
+    padding: 13px 0px 0 0;
+    top: 2px;
+    margin-right: 8px;
 }
 </style>
