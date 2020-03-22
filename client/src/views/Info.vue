@@ -116,7 +116,7 @@
     <div class="shoppingbar">
       <van-goods-action>
         <van-goods-action-icon icon="home-o" text="首页" @click="goIndex" />
-        <van-goods-action-icon icon="cart-o" text="购物车" :info="num" @click="gotocar" />
+        <van-goods-action-icon icon="cart-o" text="购物车" :info="num?num:''" @click="gotocar" />
         <van-goods-action-button type="warning" text="加入购物车" @click="addshoppingcar" />
         <van-goods-action-button type="danger" text="立即购买" @click="changeInfo" />
       </van-goods-action>

@@ -12,24 +12,23 @@ export default {
       data: [],
       opinion: [
         "美妆护肤",
-        "服饰家居",
+        "服饰潮牌",
         "儿童母婴",
-        "旅行纪念",
-        "积分兑换",
+        "超市商品",
+        "土货鲜食",
         "爆款推荐",
         "新品上架",
-        "促销专区"
+        "促销低价"
       ],
-
       opinionData: [
         { value: 0, name: "美妆护肤" },
+        { value: 0, name: "服饰潮牌" },
         { value: 0, name: "儿童母婴" },
-        { value: 0, name: "旅行纪念" },
-        { value: 0, name: "积分兑换" },
+        { value: 0, name: "超市商品" },
+        { value: 0, name: "土货鲜食" },
         { value: 0, name: "爆款推荐" },
         { value: 0, name: "新品上架" },
-        { value: 0, name: "促销专区" },
-        { value: 0, name: "服饰家居" }
+        { value: 0, name: "促销低价" }
       ]
     };
   },

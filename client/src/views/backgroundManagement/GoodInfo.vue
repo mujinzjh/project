@@ -122,12 +122,39 @@ export default {
       columns1: [
         {
           title: "商品名称",
-          key: "name"
+          key: "name",
+            render: (h, params) => {
+            var text = "";
+            if (params.row.name) {
+              text = params.row.name;
+            }
+            return h("div", [
+              h(
+                "span",
+                {
+                  props: {},
+                  style: {
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    cursor: "pointer",
+                    marginRight: ""
+                  },
+                  on: {
+                    click: () => {
+                     
+                    }
+                  }
+                },
+                text
+              )
+            ]);
+          }
         },
         {
           title: "商品价格",
           key: "price",
-          width: 80
+          width: 100
         },
         {
           title: "数量",

@@ -72,7 +72,7 @@
               ref:upload
               :show-upload-list="true"
               :on-success="handleSuccess"
-              :format="['jpg','jpeg','png']"
+              accept="image/*"
               :max-size="2048"
               :on-format-error="handleFormatError"
               :on-exceeded-size="handleMaxSize"
@@ -113,6 +113,7 @@
 
 <script>
 export default {
+  inject:['reload'],
   data() {
     return {
       formDate: "",
@@ -137,7 +138,34 @@ export default {
       columns1: [
         {
           title: "商品名称",
-          key: "name"
+          key: "name",
+           render: (h, params) => {
+            var text = "";
+            if (params.row.name) {
+              text = params.row.name;
+            }
+            return h("div", [
+              h(
+                "span",
+                {
+                  props: {},
+                  style: {
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    cursor: "pointer",
+                    marginRight: ""
+                  },
+                  on: {
+                    click: () => {
+                     
+                    }
+                  }
+                },
+                text
+              )
+            ]);
+          }
         },
         {
           title: "商品价格",
@@ -386,6 +414,7 @@ export default {
                   this.$Message.success("添加成功");
                   this.$refs[name].resetFields();
                   this.modelShow = false;
+                  this.reload();
                   this.searchListData();
                 }
               }

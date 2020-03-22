@@ -1,11 +1,10 @@
 <template>
   <div class="app">
     <div>
-       <h1 style="text-align:center">童之年商城</h1>
+      <h1 style="text-align:center;padding:10px;">童之年商城</h1>
       <Affix>
-      <Index-search></Index-search>
-    </Affix>
-  
+        <Index-search></Index-search>
+      </Affix>
 
       <Swiper></Swiper>
 
@@ -28,9 +27,14 @@
         <ul class="remUl">
           <img src="../../public/img/timg (9).jpg" />
           <div style="width:65%;height:300px;">
-            <li v-for="(goodsmeg,index) in goodinfo" :key="index" class="remli" @click="goTO(goodsmeg.gid)">
+            <li
+              v-for="(goodsmeg,index) in goodinfo"
+              :key="index"
+              class="remli"
+              @click="goTO(goodsmeg.gid)"
+            >
               <div style class="remIn">
-                <span style="text-align:center">{{goodsmeg.name}}</span>
+                <span style="text-align:left;">{{goodsmeg.name}}</span>
                 <span style="color:red;">￥{{goodsmeg.price}}</span>
               </div>
 
@@ -48,9 +52,14 @@
     <h2 class="liketitle" style="text-align:center">猜你喜欢</h2>
     <div class="likeGood">
       <ul class="likeGoodUl">
-        <li v-for="(el,index) in LikeGoodsInfo" :key="index" class="likeGoodLi" @click="goTO(el.gid)">
+        <li
+          v-for="(el,index) in LikeGoodsInfo"
+          :key="index"
+          class="likeGoodLi"
+          @click="goTO(el.gid)"
+        >
           <img :src="el.img" alt class="liImg" />
-          <div>{{el.name}}</div>
+          <div class="name-show">{{el.name}}</div>
           <div class="GoodPrice">
             <span style="color:red">￥{{el.price}}</span>
             <span style="color:gray;font-size:0.3rem;line-height:250%">库存{{el.num}}件</span>
@@ -70,17 +79,17 @@ export default {
       info: [],
       goodinfo: [],
       LikeGoodsInfo: [],
-      img:''
+      img: ""
     };
   },
   methods: {
-    goTO(gid){
-      console.log(gid)
-      this.$router.push({path:"/Info",query:{gid:gid}})
+    goTO(gid) {
+      console.log(gid);
+      this.$router.push({ path: "/Info", query: { gid: gid } });
     },
     sendID(cid) {
       // console.log(cid);
-      this.$router.push({ path: "/cate" ,query:{cid:cid}});
+      this.$router.push({ path: "/cate", query: { cid: cid } });
     },
 
     getRem: function() {
@@ -89,6 +98,9 @@ export default {
         .then(response => {
           console.log(response);
           this.goodinfo = response.data;
+          this.goodinfo.forEach(el => {
+            el.img = el.img.split(",")[0];
+          });
         })
         .catch(function(error) {
           console.log(error);
@@ -99,9 +111,9 @@ export default {
       this.axios
         .get("/Goods/getInfo")
         .then(response => {
-          response.data.forEach((el)=>{
-            el.img=el.img.split(",")[0]
-          })
+          response.data.forEach(el => {
+            el.img = el.img.split(",")[0];
+          });
           this.LikeGoodsInfo = response.data;
         })
         .catch(function(error) {
@@ -110,7 +122,6 @@ export default {
     }
   },
   created() {
-  
     this.getRem();
     this.getLikeGoods();
     this.axios
@@ -144,7 +155,11 @@ h1 {
   max-height: 400px;
   background-color: #fff;
   margin-bottom: 2%;
-  font-size: 0.5rem;
+  font-size: 0.4rem;
+}
+.likeGoodLi:nth-child(1),
+.likeGoodLi:nth-child(2) {
+  margin-top: 2%;
 }
 .likeGoodUl {
   width: 100%;
@@ -185,11 +200,12 @@ h1 {
   font-size: 0.35rem;
   text-align: center;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   flex-direction: column;
+  align-items: center;
 }
 .cateimgs {
-  /* width: 80%; */
+  width: 70%;
   height: 67%;
 }
 /* h2{
@@ -231,5 +247,17 @@ h1 {
   flex-direction: column;
   justify-content: space-around;
 }
-
+.remIn span:nth-child(1) {
+  display: inline-block;
+  width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.name-show {
+  width: 80%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>
