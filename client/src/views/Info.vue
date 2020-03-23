@@ -1,9 +1,9 @@
 <template>
   <div class="info">
     <Affix>
-    <van-nav-bar title="商品详情">
-      <van-icon name="arrow-left" slot="left" @click="goBack" />
-    </van-nav-bar>
+      <van-nav-bar title="商品详情">
+        <van-icon name="arrow-left" slot="left" @click="goBack" />
+      </van-nav-bar>
     </Affix>
     <van-swipe :autoplay="3000" indicator-color="white">
       <van-swipe-item v-for="(item, index) in swiperData" :key="index" id="loop">
@@ -80,9 +80,9 @@
           </van-col>
           <van-col span="14" class="content">
             <p>{{item.username}}</p>
-            <p>
+            <p class="comment-time-name">
               <span>发布于{{item.time}}</span>|
-              <span>{{item.name}}</span>
+              <span class="comment-name" :title="item.name">{{item.name}}</span>
             </p>
             <p>{{item.content}}</p>
           </van-col>
@@ -109,7 +109,6 @@
             </div>
           </van-col>
         </van-row>
-     
       </div>
     </div>
     <!-- <shopping-bar></shopping-bar> -->
@@ -127,7 +126,7 @@
 <script>
 import { ImagePreview, Toast } from "vant";
 export default {
-  inject:['reload'],
+  inject: ["reload"],
   data() {
     return {
       statusShow: {},
@@ -288,8 +287,8 @@ export default {
         Toast.fail("删除失败，不能删除他人评论");
       }
     },
-    onGoodJobClick(status, cmid, gid, goodNumber,lid) {
-      var that=this;
+    onGoodJobClick(status, cmid, gid, goodNumber, lid) {
+      var that = this;
       if (status === 0) {
         this.axios
           .post("/comments/likeGoods", {
@@ -308,19 +307,22 @@ export default {
           })
           .catch(err => {});
       } else {
-         this.axios.post('/comments/updatelikeInfo',{
-            likenum:goodNumber,
-            lid:lid
-          }).then(res=>{
-            console.log(res)
-            if(res.status===200){
-              if(res&&res.data&&res.data.code===1){
-                 that.reload();
+        this.axios
+          .post("/comments/updatelikeInfo", {
+            likenum: goodNumber,
+            lid: lid
+          })
+          .then(res => {
+            console.log(res);
+            if (res.status === 200) {
+              if (res && res.data && res.data.code === 1) {
+                that.reload();
               }
             }
-          }).catch(err=>{
-            console.log(res)
           })
+          .catch(err => {
+            console.log(res);
+          });
       }
     },
     getGoodsInfo() {
@@ -387,7 +389,55 @@ export default {
         this.add0(s)
       );
     },
-    // getFormDate(date) {},
+    comCJDate(date) {
+      console.log(date);
+      var minute = 1000 * 60;
+      var hour = minute * 60;
+      var day = hour * 24;
+      var halfamonth = day * 15;
+      var month = day * 30;
+      var now = new Date().getTime();
+      var diffValue = now - date;
+      if (diffValue < 0) {
+        return "不久前";
+      }
+      var monthC = diffValue / month;
+      var weekC = diffValue / (7 * day);
+      var dayC = diffValue / day;
+      var hourC = diffValue / hour;
+      var minC = diffValue / minute;
+      if (monthC > 12) {
+        // 超过1年，直接显示年月日
+        return (function() {
+          var date = new Date(date);
+          return (
+            date.getFullYear() +
+            "年" +
+            zero(date.getMonth() + 1) +
+            "月" +
+            zero(date.getDate()) +
+            "日"
+          );
+        })();
+      } else if (monthC >= 1) {
+        return parseInt(monthC) + "月前";
+      } else if (weekC >= 1) {
+        return parseInt(weekC) + "周前";
+      } else if (dayC >= 1) {
+        return parseInt(dayC) + "天前";
+      } else if (hourC >= 1) {
+        return parseInt(hourC) + "小时前";
+      } else if (minC >= 1) {
+        return parseInt(minC) + "分钟前";
+      }
+      return "刚刚";
+    },
+    zero: function(value) {
+      if (value < 10) {
+        return "0" + value;
+      }
+      return value;
+    },
     changeInfo() {
       this.$router.push({
         path: "/order",
@@ -474,13 +524,13 @@ export default {
         })
         .then(response => {
           response.data[0].forEach(el => {
-            el.time = this.getFormDate(el.commenttime);
+            el.time = this.comCJDate(el.commenttime);
           });
           var likeArr = response.data[1];
           response.data[0].forEach(el => {
             el.navStatus = 0; //添加属性
             el.likeNum = 0;
-            el.lid=0;
+            el.lid = 0;
           });
           for (let index = 0; index < response.data[0].length; index++) {
             for (let j = 0; j < likeArr.length; j++) {
@@ -674,7 +724,6 @@ export default {
   display: inline-block;
   font-size: 12px;
   margin-left: 5px;
-
 }
 .van-button--mini {
   display: inline-block;
@@ -687,5 +736,15 @@ export default {
 }
 .van-button--default {
   border: 0;
+}
+.comment-name {
+  display: inline-block;
+  width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.comment-time-name {
+  display: flex;
 }
 </style>

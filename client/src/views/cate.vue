@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <h1 style="text-align:center;">商品列表</h1>
+    <h1 style="text-align:center;padding:10px;font-weight:normal;">商品列表</h1>
     <Affix>
       <Index-search></Index-search>
     </Affix>

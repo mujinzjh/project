@@ -7,7 +7,7 @@
       shape="round"
       @click="changePage"
     >
-      <div slot="action">搜索</div>
+      <div slot="action" style="line-height:normal"><van-icon name="search" size="20"/></div>
     </van-search>
 
   </div>

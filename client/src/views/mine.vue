@@ -1,145 +1,149 @@
 <template>
   <div>
-      <div class="info">
-        <!-- <van-uploader v-model="fileList" multiple :max-count="1" :after-read="afterRead" /> -->
-        <div class="avtor">
-          <img :src="avtor" alt />
-        </div>
-        <van-uploader :after-read="afterRead">
-          <van-icon name="arrow" size="1.0rem" color="#fff" />
-        </van-uploader>
+    <div class="info">
+      <!-- <van-uploader v-model="fileList" multiple :max-count="1" :after-read="afterRead" /> -->
+      <div class="avtor">
+        <img :src="avtor" alt />
       </div>
-      <van-tabs v-model="active" @click="onClick">
-        <van-tab title="全部订单">
-          <div v-if="allOrder.length!==undefined&&allOrder.length>0">
-            <van-card
-              v-for="(el,index) in allOrder"
-              :num="el.shopnum"
-              :key="index"
-              :price="el.price"
-              desc="描述信息"
-              :title="el.name"
-              :thumb="el.img"
-              class="order"
-            >
-              <div slot="tags">
-                <van-tag plain type="danger">标签</van-tag>
-                <van-tag plain type="danger">标签</van-tag>
-              </div>
-              <div slot="footer" v-if="el.status===0">
-                <van-button size="mini" @click="active=1">去付款</van-button>
-              </div>
-              <div slot="footer" v-else-if="el.status===1">
-                <van-button size="mini" @click="active=2">去收货</van-button>
-              </div>
-              <div slot="footer" v-else-if="el.status===2">
-                <van-button size="mini" @click="goComment">去评论</van-button>
-              </div>
-              <div slot="footer" v-else>
-                <van-button size="mini" @click="show=true">售后</van-button>
-                <van-action-sheet
-                  v-model="show"
-                  :actions="actions"
-                  cancel-text="取消"
-                  @cancel="onCancel"
-                />
-              </div>
-            </van-card>
-          </div>
-          <div
-            v-else
-            style="height:465px;display:flex; align-items: center;justify-content: center;flex-direction: column;"
+      <van-uploader :after-read="afterRead" class="upload-avtor">
+        <van-icon name="add-o" size="1.0rem" />
+        <p>上传头像</p>
+      </van-uploader>
+    </div>
+    <van-tabs v-model="active" @click="onClick">
+      <van-tab title="全部订单">
+        <div v-if="allOrder.length!==undefined&&allOrder.length>0">
+          <van-card
+            v-for="(el,index) in allOrder"
+            :num="el.shopnum"
+            :key="index"
+            :price="el.price"
+            desc="描述信息"
+            :title="el.name"
+            :thumb="el.img"
+            class="order"
           >
-            <van-icon name="bar-chart-o" class="my-icon" />
-            <p style="font-size:16px;color:#d1d1d1;">暂无数据</p>
-          </div>
-        </van-tab>
-        <van-tab title="待付款">
-          <div v-if="info.length!==undefined&&info.length>0">
-            <van-card
-              v-for="(el,index) in info"
-              :num="el.shopnum"
-              :key="index"
-              :price="el.price"
-              desc="描述信息"
-              :title="el.name"
-              :thumb="el.img"
-            >
-              <div slot="tags">
-                <van-tag plain type="danger">标签</van-tag>
-                <van-tag plain type="danger">标签</van-tag>
-              </div>
-              <div slot="footer">
-                <van-button size="mini" @click="changeOrder">去付款</van-button>
-                <van-button size="mini" @click="deleteShopGoods(el.sid)">取消订单</van-button>
-              </div>
-            </van-card>
-          </div>
-          <div
-            v-else
-            style="height:465px;display:flex; align-items: center;justify-content: center;flex-direction: column;"
+            <div slot="tags">
+              <van-tag plain type="danger">标签</van-tag>
+              <van-tag plain type="danger">标签</van-tag>
+            </div>
+            <div slot="footer" v-if="el.status===0">
+              <van-button size="mini" @click="active=1">去付款</van-button>
+            </div>
+            <div slot="footer" v-else-if="el.status===1">
+              <van-button size="mini" @click="active=2">去收货</van-button>
+            </div>
+            <div slot="footer" v-else-if="el.status===2">
+              <van-button size="mini" @click="goComment">去评论</van-button>
+            </div>
+            <div slot="footer" v-else>
+              <van-button size="mini" @click="show=true">售后</van-button>
+              <van-action-sheet
+                v-model="show"
+                :actions="actions"
+                cancel-text="取消"
+                @cancel="onCancel"
+              />
+            </div>
+          </van-card>
+        </div>
+        <div
+          v-else
+          style="height:620px;display:flex; align-items: center;justify-content: center;flex-direction: column;"
+        >
+          <van-icon name="bar-chart-o" class="my-icon" />
+          <p style="font-size:16px;color:#d1d1d1;">暂无数据</p>
+        </div>
+      </van-tab>
+      <van-tab title="待付款">
+        <div v-if="info.length!==undefined&&info.length>0">
+          <van-card
+            v-for="(el,index) in info"
+            :num="el.shopnum"
+            :key="index"
+            :price="el.price"
+            desc="描述信息"
+            :title="el.name"
+            :thumb="el.img"
+            class="order"
           >
-            <van-icon name="bar-chart-o" class="my-icon" />
-            <p style="font-size:16px;color:#d1d1d1;">暂无数据</p>
-          </div>
-        </van-tab>
-        <van-tab title="待收货">
-          <div v-if="infos.length!==undefined&&infos.length>0">
-            <van-card
-              v-for="(el,index) in infos"
-              :num="el.shopnum"
-              :key="index"
-              :price="el.price"
-              desc="描述信息"
-              :title="el.name"
-              :thumb="el.img"
-            >
-              <div slot="tags">
-                <van-tag plain type="danger">标签</van-tag>
-                <van-tag plain type="danger">标签</van-tag>
-              </div>
-              <div slot="footer">
-                <van-button size="mini" @click="changeToComment(el.sid,index)">确认收货</van-button>
-              </div>
-            </van-card>
-          </div>
-          <div
-            v-else
-            style="height:465px;display:flex; align-items: center;justify-content: center;flex-direction: column;"
+            <div slot="tags">
+              <van-tag plain type="danger">标签</van-tag>
+              <van-tag plain type="danger">标签</van-tag>
+            </div>
+            <div slot="footer">
+              <van-button size="mini" @click="changeOrder">去付款</van-button>
+              <van-button size="mini" @click="deleteShopGoods(el.sid)">取消订单</van-button>
+            </div>
+          </van-card>
+        </div>
+        <div
+          v-else
+          style="height:620px;display:flex; align-items: center;justify-content: center;flex-direction: column;"
+        >
+          <van-icon name="bar-chart-o" class="my-icon" />
+          <p style="font-size:16px;color:#d1d1d1;">暂无数据</p>
+        </div>
+      </van-tab>
+      <van-tab title="待收货">
+        <div v-if="infos.length!==undefined&&infos.length>0">
+          <van-card
+            v-for="(el,index) in infos"
+            :num="el.shopnum"
+            :key="index"
+            :price="el.price"
+            desc="描述信息"
+            :title="el.name"
+            :thumb="el.img"
+            class="order"
           >
-            <van-icon name="bar-chart-o" class="my-icon" />
-            <p style="font-size:16px;color:#d1d1d1;">暂无数据</p>
-          </div>
-        </van-tab>
-        <van-tab title="评价">
-          <div v-if="commentList.length!==undefined&&commentList.length>0">
-            <van-card
-              v-for="(el,index) in commentList"
-              :num="el.shopnum"
-              :key="index"
-              :price="el.price"
-              desc="描述信息"
-              :title="el.name"
-              :thumb="el.img"
-            >
-              <div slot="tags">
-                <van-tag plain type="danger">标签</van-tag>
-                <van-tag plain type="danger">标签</van-tag>
-              </div>
-              <div slot="footer">
-                <van-button size="mini" @click="goToComment(el.sid,el.gid,index)">评论</van-button>
-              </div>
-            </van-card>
-          </div>
-          <div
-            v-else
-            style="height:465px;display:flex; align-items: center;justify-content: center;flex-direction: column;"
+            <div slot="tags">
+              <van-tag plain type="danger">标签</van-tag>
+              <van-tag plain type="danger">标签</van-tag>
+            </div>
+            <div slot="footer">
+              <van-button size="mini" @click="changeToComment(el.sid,index)">确认收货</van-button>
+            </div>
+          </van-card>
+        </div>
+        <div
+          v-else
+          style="height:620px;display:flex; align-items: center;justify-content: center;flex-direction: column;"
+        >
+          <van-icon name="bar-chart-o" class="my-icon" />
+          <p style="font-size:16px;color:#d1d1d1;">暂无数据</p>
+        </div>
+      </van-tab>
+      <van-tab title="评价">
+        <div v-if="commentList.length!==undefined&&commentList.length>0">
+          <van-card
+            v-for="(el,index) in commentList"
+            :num="el.shopnum"
+            :key="index"
+            :price="el.price"
+            desc="描述信息"
+            :title="el.name"
+            :thumb="el.img"
+            class="order"
           >
-            <van-icon name="bar-chart-o" class="my-icon" />
-            <p style="font-size:16px;color:#d1d1d1;">暂无数据</p>
-          </div>
-        </van-tab>
-      </van-tabs>
+            <div slot="tags">
+              <van-tag plain type="danger">标签</van-tag>
+              <van-tag plain type="danger">标签</van-tag>
+            </div>
+            <div slot="footer">
+              <van-button size="mini" @click="goToComment(el.sid,el.gid,index)">评论</van-button>
+            </div>
+          </van-card>
+        </div>
+        <div
+          v-else
+          style="height:620px;display:flex; align-items: center;justify-content: center;flex-direction: column;"
+        >
+          <van-icon name="bar-chart-o" class="my-icon" />
+          <p style="font-size:16px;color:#d1d1d1;">暂无数据</p>
+        </div>
+      </van-tab>
+    </van-tabs>
 
     <top-Bar></top-Bar>
 
@@ -246,8 +250,8 @@ export default {
     },
     getAllOrder() {
       var data = {
-          uid: localStorage.getItem("uid")
-        };
+        uid: localStorage.getItem("uid")
+      };
       this.axios
         .get("/shop/getAllOrder", {
           params: data
@@ -257,6 +261,9 @@ export default {
           if (res.status === 200) {
             if (res && res.data) {
               this.allOrder = res.data;
+              this.allOrder.forEach(el=>{
+                el.img=el.img.split(',')[0]
+              })
             }
           }
         })
@@ -447,8 +454,8 @@ export default {
         .post("/shop/shopGoods")
         .then(response => {
           this.info = response.data;
-          response.data.forEach(el => {
-            this.img = el.img.split(",")[0];
+           this.info.forEach(el => {
+            el.img = el.img.split(",")[0];
 
             this.sum += el.price;
           });

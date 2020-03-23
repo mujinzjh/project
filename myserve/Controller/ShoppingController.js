@@ -112,6 +112,26 @@ router.post("/updateCommentSid", (req, res) => {
         res.json(results)
     })
 })
+router.get("/getCountByGid", (req, res) => {
+    let shoppingModel = new ShoppingModel();
+    let gid=req.query.gid;
+    shoppingModel.getCountByGid(gid,(results) => {
+        var data={};
+        if(results.length===0){
+            data={
+                code:-1,
+                num:0
+            }
+            res.json(data)
+        }else{
+            data={
+                code:1,
+                num:results.length
+            }
+            res.json(data)
+        }
+    })
+})
 
 
 module.exports = router;

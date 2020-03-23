@@ -1,9 +1,9 @@
 <template>
   <div class="shoppingcar">
     <Affix>
-    <van-nav-bar title="购物车" left-arrow>
-      <van-icon name="arrow-left" slot="left" @click="goBack" />
-    </van-nav-bar>
+      <van-nav-bar title="购物车" left-arrow>
+        <van-icon name="arrow-left" slot="left" @click="goBack" />
+      </van-nav-bar>
     </Affix>
     <!-- 加入购物车的商品展示 -->
     <div v-if="info.length>0">
@@ -14,7 +14,7 @@
         :price="el.price"
         desc="描述信息"
         :title="el.name"
-        :thumb="img"
+        :thumb="el.img"
       >
         <div slot="tags">
           <van-tag plain type="danger">标签</van-tag>
@@ -37,7 +37,7 @@
         <van-icon name="shopping-cart-o" class="shop-car-icon" />
         <span>
           购物车是空的?
-          <span style="color:#FF7256; text-decoration: underline;" @click=ongoToShop>去购物</span>
+          <span style="color:#FF7256; text-decoration: underline;" @click="ongoToShop">去购物</span>
         </span>
       </div>
     </div>
@@ -70,12 +70,15 @@ export default {
     };
   },
   computed: {
-    sum: function() {
-      let sum = 0;
-      this.info.forEach(el => {
-        sum += el.price * el.shopnum;
-      });
-      return sum;
+    sum: {
+      get() {
+        let sum = 0;
+        this.info.forEach(el => {
+          sum += el.price * el.shopnum;
+        });
+        return sum;
+      },
+      set(){}
     }
   },
   methods: {
@@ -133,14 +136,14 @@ export default {
       this.axios
         .post("/shop/shopGoods")
         .then(response => {
-          // console.log(response);
-          // console.log(response.data);
           this.info = response.data;
-          response.data.forEach(el => {
-            this.img = el.img.split(",")[0];
-
+          this.info.forEach(el => {
+            el.img = el.img.split(",")[0];
             this.sum += el.price;
           });
+          // response.data.forEach(el => {
+
+          // });
         })
         .catch(function(error) {
           console.log(error);
@@ -176,7 +179,7 @@ export default {
 }
 .null-shop-car {
   width: auto;
-  height: 600px;
+  height: 740px;
   display: flex;
   align-content: center;
   justify-content: center;

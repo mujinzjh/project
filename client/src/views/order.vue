@@ -1,15 +1,16 @@
 <template>
   <div class="order">
+    <Affix>
     <van-nav-bar title="结算">
       <van-icon name="arrow-left" slot="left" @click="goBack" />
     </van-nav-bar>
-
+    </Affix>
     <div class="address">
       <span style="font-size:0.5rem">收货地址</span>
       <span style="width:100%;" @click="addressPage" class="addLan">
         <p class="pOne">
           <span>{{address.name}}</span>
-          <span style="margin-left:3%;">{{address.tel}}</span>
+          <span>{{address.tel}}</span>
         </p>
         <p>{{address.address}}</p>
       </span>
@@ -22,7 +23,7 @@
         :price="item.price"
         desc="描述信息"
         :title="item.name"
-        :thumb="img"
+        :thumb="item.img"
         style="background-color:#fff"
       />
       <div class="total">
@@ -37,7 +38,7 @@
 
       <div class="meg">
         <span>给卖家留言</span>
-        <textarea name id cols="10" rows="3"></textarea>
+        <textarea name id cols="30" rows="3" class="text"></textarea>
       </div>
       <van-submit-bar :price="sum*100" button-text="结算" is-link @submit="onSubmit" />
       <van-popup v-model="show" position="bottom" :style="{ height: '60%' }">
@@ -107,7 +108,6 @@ export default {
       this.$router.go(-1);
     },
     getAddress() {
-      console.log(this.$route.query.aid);
       this.axios
         .get("/Address/getAddById", {
           params: {
@@ -116,7 +116,20 @@ export default {
         })
         .then(response => {
           console.log(response);
-          this.address = response.data[0];
+          var data = response.data[0];
+          if (response.data.length === 0) {
+            this.address = {
+              name: "暂无数据",
+              address: "暂无数据",
+              tel: ""
+            };
+          } else {
+            this.address = {
+              name: data.name,
+              address: data.address,
+              tel: data.tel
+            };
+          }
         })
         .catch(function(error) {
           console.log(error);
@@ -147,8 +160,8 @@ export default {
         })
         .then(response => {
           console.log(response);
-          if(response.data.code==1){
-            this.$router.push({path:"/mine",query:{active:2}})
+          if (response.data.code == 1) {
+            this.$router.push({ path: "/mine", query: { active: 2 } });
           }
         })
         .catch(function(error) {
@@ -164,28 +177,23 @@ export default {
   },
   created() {
     if (this.$route.query.gid) {
-      console.log(1);
       this.goodsByGid();
-      this.getAddress();
     } else {
       this.axios
         .get("./shop/getAll")
         .then(response => {
-          console.log(response);
           this.info = response.data;
           localStorage.setItem("sid", JSON.stringify(response.data));
           var ssid = JSON.parse(localStorage.getItem("sid"));
-
-          console.log(ssid);
           response.data.forEach(el => {
-            this.img = el.img.split(",")[0];
+            el.img = el.img.split(",")[0];
           });
         })
         .catch(err => {
           console.log(err);
         });
-      this.getAddress();
     }
+    this.getAddress();
   }
 };
 </script>
@@ -227,9 +235,12 @@ export default {
   box-sizing: border-box;
   padding-left: 10px;
   padding-right: 10px;
+  padding-bottom: 5px;
+  margin-bottom: 13%;
 }
 .meg > textarea {
   border: 0;
+  border: 1px solid #e3e3e3;
 }
 .addLan {
   display: inline-block;

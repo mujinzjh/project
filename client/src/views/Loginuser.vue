@@ -47,15 +47,12 @@ export default {
           username: this.username
         })
         .then(response => {
-          // console.log(response.data);
           if (response.data.code == 0) {
-            console.log("该用户未注册,请先注册");
             this.$dialog
               .alert({
                 message: "该用户未注册,请先注册"
               })
               .then(() => {
-                // on close
               });
               this.$router.push("register");
             
@@ -74,7 +71,6 @@ export default {
           username: this.username,
           password: this.password,
         }).then((response)=> {
-          console.log(response.data);
           if(response.status===200&&response&&response.data){
              this.$store.commit('increment')
             this.$store.state.username=this.username;
@@ -91,7 +87,6 @@ export default {
             background: '#BDCBE5'
           });
           }
-
         })
         .catch(function(error) {
           console.log(error);

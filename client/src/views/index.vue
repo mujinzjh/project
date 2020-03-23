@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div>
-      <h1 style="text-align:center;padding:10px;">童之年商城</h1>
+      <h1 style="text-align:center;padding:10px;font-weight:normal">易购商城</h1>
       <Affix>
         <Index-search></Index-search>
       </Affix>
@@ -25,7 +25,7 @@
 
         <!-- 推荐的 -->
         <ul class="remUl">
-          <img src="../../public/img/timg (9).jpg" />
+          <img src="../../public/img/hot.jpeg" />
           <div style="width:65%;height:300px;">
             <li
               v-for="(goodsmeg,index) in goodinfo"

@@ -130,6 +130,18 @@ class ShoppingModel extends DbBase {
         })
 
     }
+    getCountByGid(gid,callback){
+        console.log(gid)
+        let sql=`select * from ${this.table} where gid in (${gid}) and status=1`
+        this.mydb.query(sql, (err, results) => {
+            if (err) {
+                console.log(err);
+                return err;
+            } else {
+                callback(results)
+            }
+        })
+    }
 
 }
 

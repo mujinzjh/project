@@ -4,6 +4,7 @@ class GoodsModel extends DbBase {
     constructor() {
         super();
         this.table = "goods"
+        this.table1='shopping'
     }
     getgoodsInfo(callback) {
         let sql = `select * from ${this.table} limit 0,3`
@@ -46,8 +47,7 @@ class GoodsModel extends DbBase {
 
     }
     getSearch(value, callback) {
-        let sql = `select * from ${this.table} where name like '%' ? '%' `
-
+        let sql = `select * from ${this.table} where name like '%' ? '%';`
         this.mydb.query(sql, [value], (err, results) => {
             if (err) {
                 console.log(err);
