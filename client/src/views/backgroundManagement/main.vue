@@ -3,9 +3,7 @@
   
     <el-container>
       <el-header>
-        <Affix>
           <Head-Top></Head-Top>
-        </Affix>
       </el-header>
       <el-container>
             <el-aside height="100%" width="230px">

@@ -92,7 +92,6 @@ export default {
                   }
                 }
               }
-              console.log(this.opinionData);
             }
           }
         })

@@ -598,4 +598,9 @@ export default {
 .order:last-child {
   margin-bottom: 50px;
 }
+.van-uploader {
+    position: relative;
+    display: inline-block;
+    right: 50px;
+}
 </style>

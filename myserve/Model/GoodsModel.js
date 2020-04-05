@@ -7,7 +7,7 @@ class GoodsModel extends DbBase {
         this.table1='shopping'
     }
     getgoodsInfo(callback) {
-        let sql = `select * from ${this.table} limit 0,3`
+        let sql = `select * from ${this.table} where status=1 limit 0,3 `
 
         this.mydb.query(sql, (err, results) => {
             if (err) {
@@ -21,8 +21,7 @@ class GoodsModel extends DbBase {
     }
 
     getLikegoodsInfo(callback) {
-        let sql = `select * from ${this.table} `
-
+        let sql = `select * from ${this.table} where status = 1`
         this.mydb.query(sql, (err, results) => {
             if (err) {
                 console.log(err);
@@ -34,8 +33,7 @@ class GoodsModel extends DbBase {
 
     }
     getCateGoods(cid, callback) {
-        let sql = `select * from ${this.table} where cid=?`
-
+        let sql = `select * from ${this.table} where cid=? and status = 1`
         this.mydb.query(sql, [cid], (err, results) => {
             if (err) {
                 console.log(err);
@@ -70,8 +68,18 @@ class GoodsModel extends DbBase {
         })
 
     }
+    goodsShelves(gid,callback){
+        let sql=`update ${this.table} set status=1 where gid=${gid}`
+        this.mydb.query(sql,(err,results)=>{
+            if(err){
+                console.log(err);
+                return err;
+            }else{
+                callback(results)
+            }
+        })
 
-
+    }
 }
 
 module.exports = GoodsModel;

@@ -8,7 +8,7 @@
       </Breadcrumb>
     </div>
     <div class="input-c">
-      <Button  type="primary" @click="autoUpdate">更新信息</Button>
+      <Button type="primary" @click="autoUpdate">更新信息</Button>
       <div class="search">
         <Input
           search
@@ -39,67 +39,85 @@
       </div>
     </div>
 
- <Modal v-model="modalShow" title="基本信息" class="manage-look-detail-c-max modal-show" 
-        width="480" :closable="true" :mask-closable="false">
-        <div slot="close">
-            <Icon class="ivu-icon-ios-close" @click="onCloseViewClick"></Icon>
-        </div>
-        <div style="margin:0 8px">
-            <h2>商品基本信息</h2>
-            <div class="base">
-              <div class="one-temp">
-                <span class="label">商品名称</span>
-                <span class="content">{{shopDetail.name}}</span>
-              </div>
-            </div>
-            <div class="base">
-              <div class="one-temp">
-                <span class="label">商品价格</span>
-                <span class="content">{{shopDetail.price}}</span>
-              </div>
-            </div>
-            <div class="base">
-              <div class="one-temp">
-                <span class="label">商品数量</span>
-                <span class="content">{{shopDetail.num}}</span>
-              </div>
-            </div>
-            <h2>商品的状态及详细信息</h2>
-            <div class="base">
-              <div class="one-temp">
-                <span class="label">商品状态</span>
-                <span class="content" :style="{'color':shopDetail.status?'#00EE76':'#EE7621'}">{{shopDetail.statusShow}}</span>
-              </div>
-            </div>
-            <div class="base">
-              <div class="one-temp">
-                <span class="label">添加时间</span>
-                <span class="content">{{shopDetail.time}}</span>
-              </div>
-            </div>
-            <div class="base">
-              <div class="one-temp">
-                <span class="label">商品详情</span>
-                <span class="content info-c" :title="shopDetail.info">{{shopDetail.info}}</span>
-              </div>
-            </div>
-            
-            <div class="base">
-              <div class="one-temp">
-                <span class="label">商品类别</span>
-                <span class="content">{{shopDetail.cate}}</span>
-              </div>
-            </div>
-           
+    <Modal
+      v-model="modalShow"
+      title="基本信息"
+      class="manage-look-detail-c-max modal-show"
+      width="480"
+      :closable="true"
+      :mask-closable="false"
+    >
+      <div slot="close">
+        <Icon class="ivu-icon-ios-close" @click="onCloseViewClick"></Icon>
+      </div>
+      <div style="margin:0 8px">
+        <h2>商品基本信息</h2>
+        <div class="base">
+          <div class="one-temp">
+            <span class="label">商品名称</span>
+            <span class="content">{{shopDetail.name}}</span>
           </div>
-        <div slot="footer">
-            <Button type="primary" @click.native="onCloseViewClick" size="large">确定</Button>
         </div>
+        <div class="base">
+          <div class="one-temp">
+            <span class="label">商品价格</span>
+            <span class="content">{{shopDetail.price}}</span>
+          </div>
+        </div>
+        <div class="base">
+          <div class="one-temp">
+            <span class="label">商品数量</span>
+            <span class="content">{{shopDetail.num}}</span>
+          </div>
+        </div>
+        <h2>商品的状态及详细信息</h2>
+        <div class="base">
+          <div class="one-temp">
+            <span class="label">商品状态</span>
+            <span
+              class="content"
+              :style="{'color':shopDetail.status?'#00EE76':'#EE7621'}"
+            >{{shopDetail.statusShow}}</span>
+          </div>
+        </div>
+        <div class="base">
+          <div class="one-temp">
+            <span class="label">添加时间</span>
+            <span class="content">{{shopDetail.time}}</span>
+          </div>
+        </div>
+        <div class="base">
+          <div class="one-temp">
+            <span class="label">商品详情</span>
+            <span class="content info-c" :title="shopDetail.info">{{shopDetail.info}}</span>
+          </div>
+        </div>
+
+        <div class="base">
+          <div class="one-temp">
+            <span class="label">商品类别</span>
+            <span class="content">{{shopDetail.cate}}</span>
+          </div>
+        </div>
+      </div>
+      <div slot="footer">
+        <Button type="primary" @click.native="onCloseViewClick" size="large">确定</Button>
+      </div>
     </Modal>
 
-
-
-
+    <Modal
+      v-model="modalShelvesShow"
+      title="上架商品"
+      class="manage-look-detail-c-max modal-show"
+      width="480"
+      :closable="true"
+      :mask-closable="false"
+    >
+    <div>是否上架该商品</div>
+     <div slot="footer">
+        <Button type="primary" @click.native="determineShelves" size="large">确定</Button>
+      </div>
+    </Modal>
 
 
 
@@ -110,8 +128,9 @@
 export default {
   data() {
     return {
-      shopDetail:{},
-      modalShow:false,
+      shopDetail: {},
+      modalShow: false,
+      modalShelvesShow:false,
       oldValue: "",
       fileList: [],
       multipleshow: true,
@@ -123,7 +142,7 @@ export default {
         {
           title: "商品名称",
           key: "name",
-            render: (h, params) => {
+          render: (h, params) => {
             var text = "";
             if (params.row.name) {
               text = params.row.name;
@@ -141,9 +160,7 @@ export default {
                     marginRight: ""
                   },
                   on: {
-                    click: () => {
-                     
-                    }
+                    click: () => {}
                   }
                 },
                 text
@@ -187,9 +204,7 @@ export default {
                     marginRight: ""
                   },
                   on: {
-                    click: () => {
-                     
-                    }
+                    click: () => {}
                   }
                 },
                 text
@@ -217,32 +232,71 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params)
+                      this.show(params);
                     }
                   }
                 },
                 "查看"
+              ),
+                 h(
+                "span",
+                {
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.goodsShelves(params.row);
+                    }
+                  }
+                },
+                "上架"
               )
             ]);
           }
         }
       ],
-      data1:[]
+      data1: []
     };
   },
   mounted() {
-    this.loading=true;
+    this.loading = true;
     this.searchListData();
   },
   methods: {
-    onCloseViewClick:function(){
-      this.modalShow=false;
+    warningInfo(){
+       that.modalShelvesShow=false;
+      this.$Message.warning('上架商品失败');
     },
-    autoUpdate:function(){
+    determineShelves(){
+      var gid=sessionStorage.getItem('gshelvesid'),that=this;
+      that.axios.post('/Goods/goodsShelves',{
+        gid:gid
+      }).then(res=>{
+        if(res.status===200){
+          if(res&&res.data){
+            that.modalShelvesShow=false;
+            that.$Message.success('上架该商品成功')
+          }
+        }else{
+          that.warningInfo();
+        }
+      }).catch(err=>{
+        that.warningInfo();
+      })
+    },
+    goodsShelves(row){
+      // console.log(row);
+      var that=this;
+      that.modalShelvesShow=true;
+      sessionStorage.setItem('gshelvesid',row.gid)
+    },
+    onCloseViewClick: function() {
+      this.modalShow = false;
+    },
+    autoUpdate: function() {
       this.searchListData();
     },
     reset: function() {
-      this.oldValue='';
+      this.oldValue = "";
       this.searchListData();
     },
     searchData: function(value) {
@@ -303,33 +357,32 @@ export default {
           this.$Message.error("获取数据失败");
         });
     },
-    show:function(param){
-      var that=this;
-      that.modalShow=true;
-      this.axios.get('/backmanagement/getAll',
-      {
-        params:{gid:param.row.gid}
-      }
-      ).then(res=>{
-        if(res.status===200){
-          if(res&&res.data){
-            var data=res.data;
-            that.shopDetail={
-              name:data.name,
-              price:data.price,
-              status:data.status,
-              statusShow:data.status?"已上架":"未上架",
-              num:data.num,
-              cate:data.catename,
-              info:data.info,
-              img:data.img,
-              time:data.addtimes
+    show: function(param) {
+      var that = this;
+      that.modalShow = true;
+      this.axios
+        .get("/backmanagement/getAll", {
+          params: { gid: param.row.gid }
+        })
+        .then(res => {
+          if (res.status === 200) {
+            if (res && res.data) {
+              var data = res.data;
+              that.shopDetail = {
+                name: data.name,
+                price: data.price,
+                status: data.status,
+                statusShow: data.status ? "已上架" : "未上架",
+                num: data.num,
+                cate: data.catename,
+                info: data.info,
+                img: data.img,
+                time: data.addtimes
+              };
             }
           }
-        }
-      }).catch(err=>{
-
-      })
+        })
+        .catch(err => {});
     }
   }
 };
@@ -348,7 +401,7 @@ export default {
 .reset {
   margin-left: 15px;
 }
-.page-c{
+.page-c {
   float: right;
   margin-top: 20px;
 }
@@ -359,38 +412,45 @@ export default {
   overflow-x: hidden;
   overflow-y: hidden;
 }
-.modal-show{
+.modal-show {
   padding: 0 24px;
-
 }
-.modal-show .base .label{
+.modal-show .base .label {
   margin-right: 20px;
 }
-.one-temp{
+.modal-show .base .one-temp:nth-child(1) .content {
+  display: inline-block;
+  width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.one-temp {
+  display: flex;
   font-size: 18px;
   font-family: "楷体";
   margin: 12px 0;
 }
-.info-c{
+.info-c {
   display: inline-block;
   width: 300px;
   height: 20px;
   line-height: 20px;
   overflow: hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-h2{
+h2 {
   font-weight: normal;
 }
-.modal-show h2::before{
-    content: '';
-    position: relative;
-    display: inline-block;
-    border-left: 4px solid #21a5ff;
-    background: #21a5ff;
-    padding: 13px 0px 0 0;
-    top: 2px;
-    margin-right: 8px;
+.modal-show h2::before {
+  content: "";
+  position: relative;
+  display: inline-block;
+  border-left: 4px solid #21a5ff;
+  background: #21a5ff;
+  padding: 13px 0px 0 0;
+  top: 2px;
+  margin-right: 8px;
 }
 </style>

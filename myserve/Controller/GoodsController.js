@@ -8,16 +8,12 @@ router.get("/",(req,res)=>{
         res.json(results)
     })
 })
-
-
-
 router.get("/getInfo",(req,res)=>{
     let goodsModel=new GoodsModel();
     goodsModel.getLikegoodsInfo((results)=>{
         res.json(results)
     })
 })
-
 router.post("/getGoosInfoByCid",(req,res)=>{
     let goodsModel=new GoodsModel();
     console.log(req.body)
@@ -51,5 +47,11 @@ router.post("/goodsByGid",(req,res)=>{
         res.json(results)
     })
 })
-
+router.post("/goodsShelves",(req,res)=>{
+    let goodsModel=new GoodsModel();
+    let gid=req.body.gid;
+    goodsModel.goodsShelves(gid,(results)=>{
+        res.json(results)
+    })
+})
 module.exports=router;

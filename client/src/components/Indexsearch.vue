@@ -23,7 +23,6 @@ export default {
 
   methods: {
     changePage(e) {
-      console.log(e);
       this.$router.push({ path: "/SearchPage" });
     },
    
