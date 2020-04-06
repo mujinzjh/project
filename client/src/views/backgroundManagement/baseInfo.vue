@@ -1,40 +1,41 @@
 <template>
   <div>
-    <Breadcrumb>
-      <Breadcrumb-item href="/" style="padding-left: 20px">基本信息</Breadcrumb-item>
-    </Breadcrumb>
     <div class="content-item">
-      <Row>
-        <i-col span="12">
-          <el-card class="box-card" shadow="hover">
-            <div slot="header" class="clearfix">
-              <p>用户基本信息</p>
-            </div>
+      <div class="shopGood-show">
+        <h2>信息展示</h2>
+      </div>
+      <div>
+        <Row>
+          <i-col span="12">
+            <el-card class="box-card" shadow="hover">
+              <div slot="header" class="clearfix">
+                <p>用户基本信息</p>
+              </div>
 
-            <div class="text item test">
-              <span>欢迎回来 {{username}}</span>
-            </div>
+              <div class="text item test">
+                <span>欢迎回来 超管{{username}}</span>
+              </div>
 
-            <div class="text item test">
-              <span>此次登录时间：{{date}}</span>
-            </div>
-            <div class="text item test"></div>
-          </el-card>
-        </i-col>
-        <i-col span="12">
-          <my-calendar></my-calendar>
-        </i-col>
-      </Row>
+              <div class="text item test">
+                <span>此次登录时间：{{date}}</span>
+              </div>
+              <div class="text item test"></div>
+            </el-card>
+          </i-col>
+          <i-col span="12">
+            <my-calendar></my-calendar>
+          </i-col>
+        </Row>
+      </div>
     </div>
+
     <div class="shopGood-show">
       <h2>商品信息展示</h2>
       <span @click="myExpend"><Icon :type="!isExpend?'ios-arrow-down':'ios-arrow-up'" /><span v-text="!isExpend?'展开':'收缩'"></span></span>
     </div>
-
-<div v-show="isExpend">
-  <my-chat></my-chat>
-</div>
-
+    <div v-if="isExpend">
+      <my-chat></my-chat>
+    </div>
   </div>
 </template>
 <script>
@@ -45,7 +46,7 @@ export default {
       date: "",
       username: username,
       src: "",
-      isExpend:false
+      isExpend: false
     };
   },
   created() {},
@@ -53,8 +54,8 @@ export default {
     this.getDate();
   },
   methods: {
-    myExpend(){
-      this.isExpend=!this.isExpend;
+    myExpend() {
+      this.isExpend = !this.isExpend;
     },
     getDate: function() {
       var that = this,
@@ -125,15 +126,16 @@ export default {
   font-weight: bolder;
 }
 .box-card {
-  height: 425px;
+  height: 253px;
   background: radial-gradient(circle, pink, skyblue);
 }
-.shopGood-show{
+.shopGood-show {
   margin-top: 10px;
   padding-left: 20px;
-  border-bottom: 1px solid #51A1a1;
+  border-bottom: 1px solid #51a1a1;
+  margin-bottom: 5px;
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
   align-items: center;
 }
 </style>

@@ -35,8 +35,7 @@ html{
   background-color:#f6f6f6;
 }
 body{
-  overflow-x: hidden;
-  // overflow-y:hidden;
+  // overflow: hidden;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

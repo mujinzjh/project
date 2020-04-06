@@ -12,8 +12,7 @@ router.get('/goodslist', (req, res)=>{
 
 router.post('/goods', (req, res)=>{
     var goodsModel=new GoodsModel();
-    var datew=req.body.date.split('T')[0].split('-');
-    var date=datew[0]+'/'+datew[1]+'/'+(Number(datew[2])+1)+'/ '+req.body.date.split('T')[1].split('.')[0];
+    var date=Date.parse(req.body.date);
     var data={
         name:req.body.name,
         price:req.body.price,
@@ -59,9 +58,7 @@ router.post('/updategoods', (req, res)=>{
 });
 router.post('/updategoodsInfo', (req, res)=>{
     var goodsModel=new GoodsModel();
-    console.log(req.body);
-    var datew=req.body.date.split('T')[0].split('-');
-    var addtimes=datew[0]+'/'+datew[1]+'/'+(Number(datew[2])+1)+'/ '+req.body.date.split('T')[1].split('.')[0],
+    var addtimes=Date.parse(req.body.date),
         name=req.body.name?req.body.name+'':'',
         price=req.body.price?req.body.price+'':'',
         cid=req.body.select+'',

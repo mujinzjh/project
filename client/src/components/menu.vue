@@ -1,4 +1,4 @@
-<template>
+<!--<template>
   <div class="menu-nav-aside">
     <el-row class="tac">
       <el-col :span="24">
@@ -81,3 +81,4 @@ export default {
   width: 200px;
 }
 </style>
+-->

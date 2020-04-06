@@ -142,6 +142,7 @@ export default {
         {
           title: "商品名称",
           key: "name",
+          width:300,
           render: (h, params) => {
             var text = "";
             if (params.row.name) {
@@ -151,13 +152,16 @@ export default {
               h(
                 "span",
                 {
-                  props: {},
+                  props: {
+                 
+                  },
                   style: {
+                    display:'inline-block',
+                    width:250,
+                    whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
                     cursor: "pointer",
-                    marginRight: ""
                   },
                   on: {
                     click: () => {}

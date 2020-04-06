@@ -135,29 +135,26 @@ export default {
           this.axios
             .post("/backmanagement/updatepwd", data)
             .then(res => {
-              if(res&&res.data){
-                if(res.data.code===1){
-
-                  this.modelShow=false;
-                  this.$Message.success('修改成功');
-                  this.$router.push('/backmanagementLogin');
+              if (res && res.data) {
+                if (res.data.code === 1) {
+                  this.modelShow = false;
+                  this.$Message.success("修改成功");
+                  this.$router.push("/backmanagementLogin");
                 }
               }
             })
-            .catch(function(err) {
-
-            });
+            .catch(function(err) {});
         }
       });
     }
   }
 };
 </script>
-<style>
+
+<style scoped>
 .Header-content {
   display: flex;
   justify-content: space-between;
-  background-color: #fff;
 }
 .el-dropdown-link {
   color: #333;
@@ -166,13 +163,11 @@ export default {
 .Header-content span {
   color: #fff;
   font-size: 12px;
-  text-align: center;
+  text-align: left;
+  padding-left: 15px;
 }
 .Header-content span:nth-child(1) {
- font-size: 18px;
-}
-.title {
-  background-color: #21a5ff;
+  font-size: 18px;
 }
 .el-dropdown-menu {
   top: 36px !important;
@@ -188,6 +183,6 @@ export default {
 }
 .block span {
   font-size: 18px;
-  color: black;
+  color: #fff;
 }
 </style>

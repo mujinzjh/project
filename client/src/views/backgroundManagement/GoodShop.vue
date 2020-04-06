@@ -194,7 +194,9 @@ export default {
               h(
                 "span",
                 {
-                  props: {},
+                  props: {
+                    alt:text
+                  },
                   style: {
                     overflow: "hidden",
                     textOverflow: "ellipsis",
@@ -213,7 +215,28 @@ export default {
         },
         {
           title: "添加时间",
-          key: "addtimes"
+          key: "addtimes",
+             render: (h, params) => {
+            var text = "";
+            if (params.row.addtimes) {
+              text = this.getFormDate(params.row.addtimes);
+            }
+            return h("div", [
+              h(
+                "span",
+                {
+                  props: {
+                  },
+                  style: {
+                  },
+                  on: {
+                    click: () => {}
+                  }
+                },
+                text
+              )
+            ]);
+          }
         },
         {
           title: "操作",
@@ -400,9 +423,7 @@ export default {
     postResetPassword: function(name) {
       this.dealUploadFile(this.uploadFile);
       var data = this.$refs[name].model;
-      var date = this.$refs[name].model.date.toString("yyyy-mm-dd");
       console.log(data);
-      debugger;
       this.$refs[name].validate(valid => {
         if (valid) {
           this.axios
@@ -468,6 +489,32 @@ export default {
         })
         .catch(function(err) {});
     },
+     add0(m) {
+      return m < 10 ? "0" + m : m;
+    },
+      getFormDate(date) {
+      //shijianchuo是整数，否则要parseInt转换
+      var time = new Date(date);
+      var y = time.getFullYear();
+      var m = time.getMonth() + 1;
+      var d = time.getDate();
+      var h = time.getHours();
+      var mm = time.getMinutes();
+      var s = time.getSeconds();
+      return (
+        y +
+        "-" +
+        this.add0(m) +
+        "-" +
+        this.add0(d) +
+        " " +
+        this.add0(h) +
+        ":" +
+        this.add0(mm) +
+        ":" +
+        this.add0(s)
+      );
+    },
     getTableListData: function(currentPage, pageSize) {
       var that = this;
       this.axios
@@ -504,7 +551,6 @@ export default {
     },
     updateGoods: function(name) {
       var data = this.$refs[name].model;
-      // data.gid=
       this.$refs[name].validate(valid => {
         if (true) {
           this.axios

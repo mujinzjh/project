@@ -132,8 +132,6 @@ Vue.component("shy",shy);
 // 使用echats
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts //在vue原型上添加echarts
-import pie from './components/pieShow.vue'
-Vue.component("pie-show",pie);
 // 配置axios
 axios.defaults.baseURL = "http://localhost:8806"
 Vue.prototype.axios = axios;
