@@ -132,7 +132,7 @@ class ShoppingModel extends DbBase {
     }
     getCountByGid(gid,callback){
         console.log(gid)
-        let sql=`select * from ${this.table} where gid in (${gid}) and status=1`
+        let sql=`select count(*) as nums from ${this.table} where status>0 GROUP BY gid having gid in(${gid});`
         this.mydb.query(sql, (err, results) => {
             if (err) {
                 console.log(err);

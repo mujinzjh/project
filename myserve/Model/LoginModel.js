@@ -17,6 +17,18 @@ class LoginModel extends DbBase{
         })
 
     }
+    getMyUser(uid,callback){
+        let sql=`select * from ${this.table} where uid=${uid}`
+        this.mydb.query(sql,(err,results)=>{
+            if(err){
+                console.log(err);
+                return err;
+            }else{
+               callback(results[0])
+            }
+        })
+
+    }
 
 
 

@@ -5,12 +5,17 @@
       <div class="avtor">
         <img :src="avtor" alt />
       </div>
-      <van-uploader :after-read="afterRead" class="upload-avtor">
-        <van-icon name="add-o" size="1.0rem" />
-        <p>上传头像</p>
-      </van-uploader>
+      <div style=" display: flex;align-items: center">
+        <van-uploader :after-read="afterRead" class="upload-avtor">
+          <van-icon name="add-o" size="1.0rem" />
+          <p>上传头像</p>
+        </van-uploader>
+        <div style="position: relative;right: 25px;">
+          <van-icon name="setting-o" size='40px' @click='onclickSetting'/>
+        </div>
+      </div>
     </div>
-    <van-tabs v-model="active" @click="onClick">
+    <van-tabs v-model="active" @click="onClick" sticky swipeable animated scrollspy >
       <van-tab title="全部订单">
         <div v-if="allOrder.length!==undefined&&allOrder.length>0">
           <van-card
@@ -245,6 +250,10 @@ export default {
       // this.onChange()
       this.active = 3;
     },
+    onclickSetting(){
+      var uid=localStorage.getItem('uid')
+      this.$router.push({ path: "/setting", query: { uid: uid } });
+    },
     onCancel() {
       this.show = false;
     },
@@ -261,9 +270,9 @@ export default {
           if (res.status === 200) {
             if (res && res.data) {
               this.allOrder = res.data;
-              this.allOrder.forEach(el=>{
-                el.img=el.img.split(',')[0]
-              })
+              this.allOrder.forEach(el => {
+                el.img = el.img.split(",")[0];
+              });
             }
           }
         })
@@ -454,7 +463,7 @@ export default {
         .post("/shop/shopGoods")
         .then(response => {
           this.info = response.data;
-           this.info.forEach(el => {
+          this.info.forEach(el => {
             el.img = el.img.split(",")[0];
 
             this.sum += el.price;
@@ -599,8 +608,8 @@ export default {
   margin-bottom: 50px;
 }
 .van-uploader {
-    position: relative;
-    display: inline-block;
-    right: 50px;
+  position: relative;
+  display: inline-block;
+  right: 100px;
 }
 </style>

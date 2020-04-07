@@ -10,6 +10,13 @@ router.post('/user', (req, res)=>{
         res.json(results)
     })
 });
+router.get('/getUserInfo', (req, res)=>{
+    let loginModel=new LoginModel();
+    var uid=req.query.uid;
+    loginModel.getMyUser(uid,(results)=>{
+        res.json(results)
+    })
+});
 
 
 

@@ -33,6 +33,11 @@ Vue.use(AddressList);
 import { AddressEdit } from 'vant';
 
 Vue.use(AddressEdit);
+// 引入单元格
+import { Cell, CellGroup } from 'vant';
+
+Vue.use(Cell);
+Vue.use(CellGroup);
 import { Area } from 'vant';
 
 Vue.use(Area);

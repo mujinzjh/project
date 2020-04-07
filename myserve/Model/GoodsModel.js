@@ -33,7 +33,7 @@ class GoodsModel extends DbBase {
 
     }
     getCateGoods(cid, callback) {
-        let sql = `select * from ${this.table} where cid=? and status = 1`
+        let sql = `select * from ${this.table} where cid=? and status = 1 ORDER BY gid ASC;`
         this.mydb.query(sql, [cid], (err, results) => {
             if (err) {
                 console.log(err);
@@ -45,7 +45,7 @@ class GoodsModel extends DbBase {
 
     }
     getSearch(value, callback) {
-        let sql = `select * from ${this.table} where name like '%' ? '%';`
+        let sql = `select * from ${this.table} where name like '%' ? '%' and status=1;`
         this.mydb.query(sql, [value], (err, results) => {
             if (err) {
                 console.log(err);

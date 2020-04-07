@@ -55,7 +55,7 @@
         <div class="base">
           <div class="one-temp">
             <span class="label">商品名称</span>
-            <span class="content">{{shopDetail.name}}</span>
+            <span class="content" :title="shopDetail.name">{{shopDetail.name}}</span>
           </div>
         </div>
         <div class="base">
@@ -218,7 +218,28 @@ export default {
         },
         {
           title: "添加时间",
-          key: "addtimes"
+          key: "addtimes",
+                    render: (h, params) => {
+            var text = "";
+            if (params.row.addtimes) {
+              text = this.getFormDate(params.row.addtimes);
+            }
+            return h("div", [
+              h(
+                "span",
+                {
+                  props: {
+                  },
+                  style: {
+                  },
+                  on: {
+                    click: () => {}
+                  }
+                },
+                text
+              )
+            ]);
+          }
         },
         {
           title: "操作",
@@ -338,7 +359,32 @@ export default {
       this.currentPage = page;
       this.getTableListData(this.currentPage, this.pageSize);
     },
-
+  add0(m) {
+      return m < 10 ? "0" + m : m;
+    },
+      getFormDate(date) {
+      //shijianchuo是整数，否则要parseInt转换
+      var time = new Date(date);
+      var y = time.getFullYear();
+      var m = time.getMonth() + 1;
+      var d = time.getDate();
+      var h = time.getHours();
+      var mm = time.getMinutes();
+      var s = time.getSeconds();
+      return (
+        y +
+        "-" +
+        this.add0(m) +
+        "-" +
+        this.add0(d) +
+        " " +
+        this.add0(h) +
+        ":" +
+        this.add0(mm) +
+        ":" +
+        this.add0(s)
+      );
+    },
     getTableListData: function(currentPage, pageSize) {
       var that = this;
       this.axios
