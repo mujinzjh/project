@@ -61,11 +61,28 @@ const routes = [
   },
   {
     path: '/setting',
-    name: 'setting',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/setting.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/setting.vue'),
+    // children:[{
+    //   path: 'countInfo',
+    //   name:'countInfo',
+    //   component: () => import('../views/countInfo.vue'),
+    // }]
+  },
+  {
+    path: '/countInfo',
+    component: () => import('../views/countInfo.vue'),
+  },
+  {
+    path: '/nameedit',
+    component: () => import('../views/nameEdit.vue')
+  },
+  {
+    path: '/passwordedit',
+    component: () => import('../views/passwordEdit.vue')
+  },
+  {
+    path: '/infoshow',
+    component: () => import('../views/Infoshow.vue')
   },
   {
     path: '/cate',

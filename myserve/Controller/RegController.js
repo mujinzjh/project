@@ -52,10 +52,11 @@ router.get('/judgeCode', (req, res)=>{
 
 router.post("/user",(req,res)=>{
     let regModel=new RegModel();
-    var username=req.body.username
-    var passwd=req.body.password
-    var phone=req.body.phone
-    regModel.regmyuser(username,passwd,phone,(results)=>{
+    var username=req.body.username;
+    var passwd=req.body.password;
+    var phone=req.body.phone;
+    var regtime=req.body.regtime;
+    regModel.regmyuser(username,passwd,phone,regtime,(results)=>{
         res.json(results)
     })
 })

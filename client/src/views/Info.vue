@@ -64,7 +64,7 @@
     <div class="list">
       <div class="top">
         <span @click="clickcommodity" :class="commodity ? 'buline' : ''">商品详情</span>
-        <span @click="clickmerchant" :class="merchant ? 'buline' : ''">商户资质</span>
+        <!-- <span @click="clickmerchant" :class="merchant ? 'buline' : ''">商户资质</span> -->
         <span @click="clickcomment" :class="comment ? 'buline' : ''">评论({{commentlist.length}})</span>
       </div>
       <div v-if="commodity" class="commodity">
@@ -302,6 +302,7 @@ export default {
               if (res && res.data) {
                 Toast.success("点赞成功");
                 that.reload();
+                that.clickcomment();
               }
             }
           })
@@ -743,6 +744,7 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-left: 15px;
 }
 .comment-time-name {
   display: flex;

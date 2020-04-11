@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    <van-tabs v-model="active" @click="onClick" sticky swipeable animated scrollspy >
+    <van-tabs v-model="active" @click="onClick" sticky swipeable animated  >
       <van-tab title="全部订单">
         <div v-if="allOrder.length!==undefined&&allOrder.length>0">
           <van-card
@@ -46,9 +46,12 @@
               <van-action-sheet
                 v-model="show"
                 :actions="actions"
+                :lock-scroll="false"
                 cancel-text="取消"
                 @cancel="onCancel"
+                style="margin-bottom:50px"
               />
+              
             </div>
           </van-card>
         </div>
@@ -240,7 +243,8 @@ export default {
       rateValue: "非常好",
       kdRate: "",
       serveRate: "",
-      message: ""
+      message: "",
+      uid:localStorage.getItem('uid')
 
       // avtor: ""
     };
@@ -529,6 +533,24 @@ export default {
           console.log(error);
         });
     },
+    nowUser() {
+      this.axios
+        .get("/Login/getUserInfo", {
+          params: {
+            uid: this.uid
+          }
+        })
+        .then(res => {
+          if (res.status === 200) {
+            if (res && res.data) {
+              this.avtor = res.data.avator;
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     ImGInsert() {
       this.axios
         .post("/Reg/regAvator", {
@@ -547,8 +569,9 @@ export default {
     if (localStorage.getItem("avtor")) {
       this.avtor = localStorage.getItem("avtor");
     } else {
-      this.avtor =
-        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572091337901&di=adb9ce0b2acdccad2e9a474c917fb6bb&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fbdaca9a07e1a8947c00c2f826ebf848750927aa24963-cATwbg_fw658";
+      // this.avtor =
+      //   "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572091337901&di=adb9ce0b2acdccad2e9a474c917fb6bb&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fbdaca9a07e1a8947c00c2f826ebf848750927aa24963-cATwbg_fw658";
+      this.nowUser();
     }
     if (this.$route.query.active) {
       this.active = this.$route.query.active;
@@ -580,6 +603,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 4px;
   margin-bottom: 2%;
   margin-top: 1%;
 }

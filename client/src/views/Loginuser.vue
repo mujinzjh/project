@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="login-content">
     <div class="mydiv">用户登录</div>
-    <van-field
+    <div class="form-content">
+ <van-field
       v-model="username"
       clearable
       label="用户名"
@@ -10,12 +11,13 @@
     />
 
     <van-field
+    class="input-password"
       v-model="password"
       type="password"
       label="密码"
       placeholder="请输入密码"
-   
     />
+    </div>
   <div class="mybutton">
 <van-button class
     ="myclickreg" @click="loginuser" color="linear-gradient(to right, #4bb0ff, #6149f6)">登录</van-button>
@@ -110,6 +112,16 @@ created() {
 </script>
 
 <style scoped>
+.form-content{
+  padding: 10px;
+}
+.input-password{
+  margin-top: 2%;
+}
+.login-content{
+  min-height: 809px;
+  background: linear-gradient(to right, #4bb0ff, #6149f6);
+}
 .mydiv{
     width: 100%;
     height: 200px;

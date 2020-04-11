@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="reg-content">
     <div class="mydiv">用户注册</div>
-    <van-field v-model="username" clearable label="用户名" placeholder="请输入用户名" @blur="testmyuser" />
+    <div class="form-content">
+<van-field v-model="username" clearable label="用户名" placeholder="请输入用户名" @blur="testmyuser" />
 
     <van-field
       v-model="password"
@@ -26,6 +27,8 @@
         </div>
       </van-button>
     </van-field>
+    </div>
+    
 
 <div class="mybutton">
     <van-button
@@ -93,6 +96,7 @@ export default {
    
     },
     regmyuser() {
+      var regtime=new Date().getTime();
          if (this.username == "" || this.password == "" || this.phone == "") {
             console.log("请将资料完整");
             this.$dialog
@@ -107,7 +111,8 @@ export default {
         .post("/Reg/user", {
           username: this.username,
           password: this.password,
-          phone: this.phone
+          phone: this.phone,
+          regtime:regtime
         })
         .then(response => {
           // console.log(response);
@@ -247,6 +252,16 @@ export default {
 </script>
 
 <style scoped>
+.reg-content{
+  min-height: 809px;
+  background: linear-gradient(to right, #4bb0ff, #6149f6);
+}
+.van-cell{
+  margin-top: 2%;
+}
+.form-content{
+  padding: 10px;
+}
 .mydiv {
   width: 100%;
   height: 200px;

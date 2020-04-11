@@ -38,6 +38,10 @@ import { Cell, CellGroup } from 'vant';
 
 Vue.use(Cell);
 Vue.use(CellGroup);
+// 引入表单元素
+import { Form } from 'vant';
+Vue.use(Form);
+
 import { Area } from 'vant';
 
 Vue.use(Area);

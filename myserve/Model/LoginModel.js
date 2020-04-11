@@ -29,8 +29,30 @@ class LoginModel extends DbBase{
         })
 
     }
+    updateName(username,uid,callback){
+        let sql=`UPDATE ${this.table} SET username ='${username}' WHERE uid = ${uid}`
+        this.mydb.query(sql,(err,results)=>{
+            if(err){
+                console.log(err);
+                return err;
+            }else{
+               callback(results)
+            }
+        })
 
+    }
+    updatePassword(newpwd,uid,callback){
+        let sql=`UPDATE ${this.table} SET password ='${newpwd}' WHERE uid = ${uid}`
+        this.mydb.query(sql,(err,results)=>{
+            if(err){
+                console.log(err);
+                return err;
+            }else{
+               callback(results)
+            }
+        })
 
+    }
 
 }
 

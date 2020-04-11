@@ -126,6 +126,7 @@
 
 <script>
 export default {
+  inject: ["reload"],
   data() {
     return {
       shopDetail: {},
@@ -318,7 +319,8 @@ export default {
       this.modalShow = false;
     },
     autoUpdate: function() {
-      this.searchListData();
+        this.loading = true;
+        this.searchListData();
     },
     reset: function() {
       this.oldValue = "";
@@ -442,7 +444,7 @@ export default {
 .input-c {
   display: flex;
   justify-content: space-between;
-  margin: 20px 0px;
+  margin-top: 12px;
 }
 .search {
   display: flex;

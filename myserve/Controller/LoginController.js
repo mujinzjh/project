@@ -17,8 +17,44 @@ router.get('/getUserInfo', (req, res)=>{
         res.json(results)
     })
 });
-
-
+router.post('/nameedit', (req, res)=>{
+    let loginModel=new LoginModel();
+    let username=req.body.values.newname,uid=req.body.uid;
+    loginModel.updateName(username,uid,(results)=>{
+        var data={}
+        if(results.affectedRows===1){
+            data={
+                code:1,
+                msg:'修改成功'
+            }
+        }else{
+            data={
+                code:-1,
+                msg:'修改失败'
+            }  
+        }
+        res.json(data);
+    })
+});
+router.post('/passwordedit', (req, res)=>{
+    let loginModel=new LoginModel();
+    let newpwd=req.body.values.newpwd,uid=req.body.uid;
+    loginModel.updatePassword(newpwd,uid,(results)=>{
+        var data={}
+        if(results.affectedRows===1){
+            data={
+                code:1,
+                msg:'修改成功'
+            }
+        }else{
+            data={
+                code:-1,
+                msg:'修改失败'
+            }  
+        }
+        res.json(data);
+    })
+});
 
 
 module.exports=router;

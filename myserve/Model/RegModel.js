@@ -5,8 +5,8 @@ class RegModel extends DbBase {
         super();
         this.table = "user"
     }
-    regmyuser(username, passwd, phone, callback) {
-        let sql = `insert into ${this.table}(username,password,phone) values('${username}','${passwd}','${phone}')`
+    regmyuser(username, passwd, phone,regtime, callback) {
+        let sql = `insert into ${this.table}(username,password,phone,regtime) values('${username}','${passwd}','${phone}',${regtime})`
         this.mydb.query(sql, (err, results) => {
             if (err) {
                 console.log(err);
