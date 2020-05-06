@@ -146,7 +146,7 @@ export default {
           this.info = response.data;
 
           response.data.forEach(el => {
-            this.img = el.img.split(",")[0];
+            el.img = el.img.split(",")[0];
           });
         })
         .catch(function(error) {
@@ -199,6 +199,9 @@ export default {
 </script>
 
 <style scoped>
+.order{
+  min-height: 809px;
+}
 .address {
   width: 100%;
   background-color: #fff;

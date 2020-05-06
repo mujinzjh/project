@@ -233,8 +233,7 @@ export default {
       value1: 0,
       value2: 0,
       active: 0,
-      avtor:
-        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572091337901&di=adb9ce0b2acdccad2e9a474c917fb6bb&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fbdaca9a07e1a8947c00c2f826ebf848750927aa24963-cATwbg_fw658",
+      avtor:'../assets/timg .jpg',
       info: [],
       infos: [],
       commentList: [],

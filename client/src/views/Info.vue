@@ -440,10 +440,27 @@ export default {
       return value;
     },
     changeInfo() {
-      this.$router.push({
-        path: "/order",
-        query: { gid: this.$route.query.gid }
+      var gid=this.$route.query.gid;
+       this.axios
+        .post("/add/addgoods", {
+          uid: localStorage.getItem("uid"),
+          gid: gid
+        })
+        .then(response => {
+          if (response.data.code == 1) {
+            this.$router.push({
+            path: "/order",
+            query: { gid: gid }
       });
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      // this.$router.push({
+      //   path: "/order",
+      //   query: { gid: this.$route.query.gid }
+      // });
     },
     goBack() {
       this.$router.go(-1);

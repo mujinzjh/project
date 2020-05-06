@@ -429,7 +429,7 @@ export default {
                 cate: data.catename,
                 info: data.info,
                 img: data.img,
-                time: data.addtimes
+                time: that.getFormDate(data.addtimes)
               };
             }
           }
