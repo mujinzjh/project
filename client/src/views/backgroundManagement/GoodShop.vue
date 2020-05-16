@@ -250,7 +250,8 @@ export default {
                 {
                   props: {},
                   style: {
-                    marginRight: "5px"
+                    marginRight: "5px",
+                      color:'#6495ed'
                   },
                   on: {
                     click: () => {
@@ -264,6 +265,10 @@ export default {
                 "span",
                 {
                   props: {},
+                  style: {
+                    marginRight: "5px",
+                      color:'#6495ed'
+                  },
                   on: {
                     click: () => {
                       this.remove(params.row);
@@ -417,8 +422,11 @@ export default {
       }
     },
     closeModel: function(name) {
-      this.$refs[name].resetFields();
       this.modelShow = false;
+      this.isEdit=true;
+      this.formItem.textarea="";
+      this.$refs[name].resetFields();
+      
     },
     postResetPassword: function(name) {
       this.dealUploadFile(this.uploadFile);
@@ -558,10 +566,11 @@ export default {
             .then(res => {
               if (res && res.data) {
                 if (res.data.affectedRows) {
+                  this.modelShow = false;
+                  this.isEdit = true;
+                  this.formItem.textarea='';
                   this.$Message.success("修改成功");
                   this.$refs[name].resetFields();
-                  this.modelShow = false;
-                  this.isEdit = false;
                   this.searchListData();
                 }
               }

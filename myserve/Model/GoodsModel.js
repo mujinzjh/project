@@ -80,6 +80,18 @@ class GoodsModel extends DbBase {
         })
 
     }
+    downShelves(gid,callback){
+        let sql=`update ${this.table} set status=2 where gid=${gid}`
+        this.mydb.query(sql,(err,results)=>{
+            if(err){
+                console.log(err);
+                return err;
+            }else{
+                callback(results)
+            }
+        })
+
+    }
 }
 
 module.exports = GoodsModel;

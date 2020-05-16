@@ -76,7 +76,7 @@
             <span class="label">商品状态</span>
             <span
               class="content"
-              :style="{'color':shopDetail.status?'#00EE76':'#EE7621'}"
+              :style="{'color':shopDetail.status?(shopDetail.status===2?'yellow':'#00EE76'):'#EE7621'}"
             >{{shopDetail.statusShow}}</span>
           </div>
         </div>
@@ -107,20 +107,17 @@
 
     <Modal
       v-model="modalShelvesShow"
-      title="上架商品"
+      :title="shelvesShow?'下架商品':'上架商品'"
       class="manage-look-detail-c-max modal-show"
       width="480"
       :closable="true"
       :mask-closable="false"
     >
-    <div>是否上架该商品</div>
-     <div slot="footer">
+      <div>{{shelvesShow?'是否下架该商品':'是否上架该商品'}}</div>
+      <div slot="footer">
         <Button type="primary" @click.native="determineShelves" size="large">确定</Button>
       </div>
     </Modal>
-
-
-
   </div>
 </template>
 
@@ -129,9 +126,10 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      shelvesShow: false,
       shopDetail: {},
       modalShow: false,
-      modalShelvesShow:false,
+      modalShelvesShow: false,
       oldValue: "",
       fileList: [],
       multipleshow: true,
@@ -143,7 +141,7 @@ export default {
         {
           title: "商品名称",
           key: "name",
-          width:300,
+          width: 300,
           render: (h, params) => {
             var text = "";
             if (params.row.name) {
@@ -153,16 +151,14 @@ export default {
               h(
                 "span",
                 {
-                  props: {
-                 
-                  },
+                  props: {},
                   style: {
-                    display:'inline-block',
-                    width:250,
+                    display: "inline-block",
+                    width: 80,
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    cursor: "pointer",
+                    cursor: "pointer"
                   },
                   on: {
                     click: () => {}
@@ -220,7 +216,7 @@ export default {
         {
           title: "添加时间",
           key: "addtimes",
-                    render: (h, params) => {
+          render: (h, params) => {
             var text = "";
             if (params.row.addtimes) {
               text = this.getFormDate(params.row.addtimes);
@@ -229,10 +225,8 @@ export default {
               h(
                 "span",
                 {
-                  props: {
-                  },
-                  style: {
-                  },
+                  props: {},
+                  style: {},
                   on: {
                     click: () => {}
                   }
@@ -254,7 +248,9 @@ export default {
                 {
                   props: {},
                   style: {
-                    marginRight: "5px"
+                    marginRight: "5px",
+                     cursor: "pointer",
+                     color:'#6495ed'
                   },
                   on: {
                     click: () => {
@@ -264,10 +260,14 @@ export default {
                 },
                 "查看"
               ),
-                 h(
+              h(
                 "span",
                 {
                   props: {},
+                   style: {
+                     cursor: "pointer",
+                       color:'#6495ed'
+                  },
                   on: {
                     click: () => {
                       this.goodsShelves(params.row);
@@ -275,6 +275,23 @@ export default {
                   }
                 },
                 "上架"
+              ),
+              h(
+                "span",
+                {
+                  props: {},
+                  style: {
+                    marginLeft: "5px",
+                     cursor: "pointer",
+                       color:'#6495ed'
+                  },
+                  on: {
+                    click: () => {
+                      this.downShelves(params.row);
+                    }
+                  }
+                },
+                "下架"
               )
             ]);
           }
@@ -288,39 +305,91 @@ export default {
     this.searchListData();
   },
   methods: {
-    warningInfo(){
-       that.modalShelvesShow=false;
-      this.$Message.warning('上架商品失败');
+    downShelves(row) {
+      var that = this,
+        status = row.status;
+      if (status === 0) {
+        this.$Message.warning("该商品暂未上架");
+      } else if (status === 1) {
+        that.modalShelvesShow = true;
+        that.shelvesShow = true;
+        sessionStorage.setItem("downshelvesid", row.gid);
+      }else if(status===2){
+        this.$Message.warning("该商品已下架");
+      }
     },
-    determineShelves(){
-      var gid=sessionStorage.getItem('gshelvesid'),that=this;
-      that.axios.post('/Goods/goodsShelves',{
-        gid:gid
-      }).then(res=>{
-        if(res.status===200){
-          if(res&&res.data){
-            that.modalShelvesShow=false;
-            that.$Message.success('上架该商品成功')
+    downConfirm() {
+      var gid = sessionStorage.getItem("downshelvesid"),
+        that = this;
+      that.axios
+        .post("/Goods/downShelves", {
+          gid: gid
+        })
+        .then(res => {
+          if (res.status === 200) {
+            if (res && res.data) {
+              that.modalShelvesShow = false;
+              that.$Message.success("下架该商品成功");
+              that.searchListData();
+            }
+          } else {
+            that.warningInfo();
           }
-        }else{
+        })
+        .catch(err => {
           that.warningInfo();
-        }
-      }).catch(err=>{
-        that.warningInfo();
-      })
+        });
     },
-    goodsShelves(row){
-      // console.log(row);
-      var that=this;
-      that.modalShelvesShow=true;
-      sessionStorage.setItem('gshelvesid',row.gid)
+    warningInfo() {
+      var that = this;
+      that.modalShelvesShow = false;
+      this.$Message.warning("上架商品失败");
+    },
+    determineShelves() {
+      var that = this,
+        postShow = that.shelvesShow;
+      if (postShow) {
+        that.downConfirm();
+      } else {
+        var gid = sessionStorage.getItem("gshelvesid"),
+          that = this;
+        that.axios
+          .post("/Goods/goodsShelves", {
+            gid: gid
+          })
+          .then(res => {
+            if (res.status === 200) {
+              if (res && res.data) {
+                that.modalShelvesShow = false;
+                that.$Message.success("上架该商品成功");
+                 that.searchListData();
+              }
+            } else {
+              that.warningInfo();
+            }
+          })
+          .catch(err => {
+            that.warningInfo();
+          });
+      }
+    },
+    goodsShelves(row) {
+      var status = row.status,
+        that = this;
+      if (status === 1) {
+        this.$Message.warning("该商品已被上架");
+      } else if (status === 0||status>1) {
+        that.modalShelvesShow = true;
+        that.shelvesShow=false;
+        sessionStorage.setItem("gshelvesid", row.gid);
+      }
     },
     onCloseViewClick: function() {
       this.modalShow = false;
     },
     autoUpdate: function() {
-        this.loading = true;
-        this.searchListData();
+      this.loading = true;
+      this.searchListData();
     },
     reset: function() {
       this.oldValue = "";
@@ -361,10 +430,10 @@ export default {
       this.currentPage = page;
       this.getTableListData(this.currentPage, this.pageSize);
     },
-  add0(m) {
+    add0(m) {
       return m < 10 ? "0" + m : m;
     },
-      getFormDate(date) {
+    getFormDate(date) {
       //shijianchuo是整数，否则要parseInt转换
       var time = new Date(date);
       var y = time.getFullYear();
@@ -402,7 +471,6 @@ export default {
             this.loading = false;
             this.data1 = data[0];
             this.totalRecord = data[1][0].nums;
-            // console.log(res.data)
           }
         })
         .catch(function(err) {
@@ -424,7 +492,7 @@ export default {
                 name: data.name,
                 price: data.price,
                 status: data.status,
-                statusShow: data.status ? "已上架" : "未上架",
+                statusShow: data.status?(data.status===2?'已下架':'已上架'):'未上架',
                 num: data.num,
                 cate: data.catename,
                 info: data.info,

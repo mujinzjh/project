@@ -54,4 +54,12 @@ router.post("/goodsShelves",(req,res)=>{
         res.json(results)
     })
 })
+router.post("/downShelves",(req,res)=>{
+    let goodsModel=new GoodsModel();
+    let gid=req.body.gid;
+    goodsModel.downShelves(gid,(results)=>{
+        res.json(results)
+    })
+})
+
 module.exports=router;
