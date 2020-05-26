@@ -78,9 +78,9 @@ class goodsModel extends DbBase{
      }
 
 
-     updateGoods(name,price,cid,num,info,addtimes,gid,callback){
-         console.log(name,price,cid,num,info,addtimes,gid);
-         let sql=`update ${this.table} set name='${name}',price=${price},cid=${cid},info='${info}',addtimes='${addtimes}' where gid=${gid}`;
+     updateGoods(name,price,cid,num,info,gid,callback){
+         console.log(name,price,cid,num,info,gid);
+         let sql=`update ${this.table} set name='${name}',price=${price},cid=${cid},info='${info}' where gid=${gid}`;
          console.log(sql);
          this.mydb.query(sql,(err,results)=>{
              if(err){

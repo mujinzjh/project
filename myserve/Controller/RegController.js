@@ -6,8 +6,6 @@ const svgCaptcha = require('svg-captcha');
 
 
 var mytrue=1
-
-
 router.get('/captcha',(req,res)=>{
     // 验证码，有两个属性，text是字符，captcha是svg代码
     var code = svgCaptcha.create({  
@@ -27,11 +25,9 @@ router.get('/captcha',(req,res)=>{
         // 高度  
         height: 30,  
     });
-
-  // 保存到session,忽略大小写
+    // 保存到session,忽略大小写
     req.session.randomcode = code.text.toLowerCase();
      mytrue=req.session.randomcode
-    // console.log(req.session.randomcode)
     // 返回数据直接放入页面元素展示即可
     res.send(code.data);
 });

@@ -12,7 +12,7 @@ router.get('/goodslist', (req, res)=>{
 
 router.post('/goods', (req, res)=>{
     var goodsModel=new GoodsModel();
-    var date=Date.parse(req.body.date);
+    var date=new Date().getTime();
     var data={
         name:req.body.name,
         price:req.body.price,
@@ -58,14 +58,13 @@ router.post('/updategoods', (req, res)=>{
 });
 router.post('/updategoodsInfo', (req, res)=>{
     var goodsModel=new GoodsModel();
-    var addtimes=Date.parse(req.body.date),
-        name=req.body.name?req.body.name+'':'',
+    var name=req.body.name?req.body.name+'':'',
         price=req.body.price?req.body.price+'':'',
         cid=req.body.select+'',
         num=req.body.num+'',
         info=req.body.textarea?req.body.textarea+'':'',
         gid=req.body.gid;
-    goodsModel.updateGoods(name,price,cid,num,info,addtimes,gid,(results)=>{
+    goodsModel.updateGoods(name,price,cid,num,info,gid,(results)=>{
         res.json(results)
     })
 });

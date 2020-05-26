@@ -64,7 +64,6 @@ export default {
           console.log(error);
         });
       }
-   
     },
     loginuser(){
      if(this.username!=''&&this.password!=''){
@@ -81,7 +80,6 @@ export default {
             var value = localStorage.getItem("username");
             this.$router.push("/index");
           }else{
-            
             this.$notify({
             message: "密码或账号错误,请重新输入",
             duration: 2000,
@@ -98,12 +96,9 @@ export default {
               .alert({
                 message: "请填写完整"
               })
-              .then(() => {
-                // on close
-              });
+              .then(() => {});
      }
-     }
-     
+     }  
   },
 
 created() {

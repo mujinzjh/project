@@ -58,15 +58,15 @@
               >{{item.lable}}</Option>
             </Select>
           </FormItem>
-          <FormItem label="添加时间">
+          <!-- <FormItem label="添加时间" v-if="isEdit">
             <FormItem prop="date">
               <DatePicker type="datetime" placeholder="Select date" v-model="formItem.date"></DatePicker>
-            </FormItem>
+          </FormItem>-->
 
-            <!-- <FormItem prop="time">
+          <!-- <FormItem prop="time">
               <TimePicker type="time" placeholder="Select time" v-model="formItem.time"></TimePicker>
-            </FormItem>-->
-          </FormItem>
+          </FormItem>-->
+          <!-- </FormItem> -->
           <FormItem label="商品图片" prop="img" v-if="isEdit">
             <Upload
               ref:upload
@@ -113,7 +113,7 @@
 
 <script>
 export default {
-  inject:['reload'],
+  inject: ["reload"],
   data() {
     return {
       formDate: "",
@@ -123,7 +123,7 @@ export default {
       formItem: {
         name: "",
         price: "",
-        num: 0,
+        num: "",
         select: "",
         time: "",
         textarea: "",
@@ -139,7 +139,7 @@ export default {
         {
           title: "商品名称",
           key: "name",
-           render: (h, params) => {
+          render: (h, params) => {
             var text = "";
             if (params.row.name) {
               text = params.row.name;
@@ -157,9 +157,7 @@ export default {
                     marginRight: ""
                   },
                   on: {
-                    click: () => {
-                     
-                    }
+                    click: () => {}
                   }
                 },
                 text
@@ -195,7 +193,7 @@ export default {
                 "span",
                 {
                   props: {
-                    alt:text
+                    alt: text
                   },
                   style: {
                     overflow: "hidden",
@@ -216,7 +214,7 @@ export default {
         {
           title: "添加时间",
           key: "addtimes",
-             render: (h, params) => {
+          render: (h, params) => {
             var text = "";
             if (params.row.addtimes) {
               text = this.getFormDate(params.row.addtimes);
@@ -225,10 +223,8 @@ export default {
               h(
                 "span",
                 {
-                  props: {
-                  },
-                  style: {
-                  },
+                  props: {},
+                  style: {},
                   on: {
                     click: () => {}
                   }
@@ -251,7 +247,7 @@ export default {
                   props: {},
                   style: {
                     marginRight: "5px",
-                      color:'#6495ed'
+                    color: "#6495ed"
                   },
                   on: {
                     click: () => {
@@ -267,7 +263,7 @@ export default {
                   props: {},
                   style: {
                     marginRight: "5px",
-                      color:'#6495ed'
+                    color: "#6495ed"
                   },
                   on: {
                     click: () => {
@@ -354,20 +350,18 @@ export default {
   methods: {
     handleSuccess(res, file) {
       console.log(res);
-      var arr=this.uploadFile;
-      if(arr.length<=5){
-          arr.push(res.data.src);
-      }else{
-        
+      var arr = this.uploadFile;
+      if (arr.length <= 5) {
+        arr.push(res.data.src);
+      } else {
       }
-    
     },
     dealUploadFile(array) {
       var that = this;
       console.log(array.length);
       for (var i = 0; i < array.length; i++) {
-        that.formItem.img +=(that.fileIsFirst?'':',')+array[i];
-        that.fileIsFirst=false;
+        that.formItem.img += (that.fileIsFirst ? "" : ",") + array[i];
+        that.fileIsFirst = false;
       }
     },
     handleFormatError(file) {
@@ -423,10 +417,9 @@ export default {
     },
     closeModel: function(name) {
       this.modelShow = false;
-      this.isEdit=true;
-      this.formItem.textarea="";
+      this.isEdit = true;
+      this.formItem.textarea = "";
       this.$refs[name].resetFields();
-      
     },
     postResetPassword: function(name) {
       this.dealUploadFile(this.uploadFile);
@@ -440,10 +433,10 @@ export default {
               console.log(res);
               if (res && res.data) {
                 if (res.data.affectedRows) {
+                  this.modelShow = false;
+                  this.isEdit = true;
                   this.$Message.success("添加成功");
                   this.$refs[name].resetFields();
-                  this.modelShow = false;
-                  this.reload();
                   this.searchListData();
                 }
               }
@@ -497,10 +490,10 @@ export default {
         })
         .catch(function(err) {});
     },
-     add0(m) {
+    add0(m) {
       return m < 10 ? "0" + m : m;
     },
-      getFormDate(date) {
+    getFormDate(date) {
       //shijianchuo是整数，否则要parseInt转换
       var time = new Date(date);
       var y = time.getFullYear();
@@ -548,12 +541,39 @@ export default {
     edit: function(row) {
       this.modelShow = true;
       this.isEdit = false;
+      var cateId = 0;
+      switch (row.catename) {
+        case "美妆护肤":
+          cateId = 1;
+          break;
+        case "服饰潮牌":
+          cateId = 2;
+          break;
+        case "儿童母婴":
+          cateId = 3;
+          break;
+        case "超市商品":
+          cateId = 4;
+          break;
+        case "土货鲜食":
+          cateId = 5;
+          break;
+        case "爆款推荐":
+          cateId = 6;
+          break;
+        case "新品上架":
+          cateId = 7;
+          break;
+        case "促销低价":
+          cateId = 8;
+          break;
+      }
       this.formItem = {
         gid: row.gid,
         name: row.name,
         price: row.price,
         num: row.num,
-        select: row.catename,
+        select: cateId,
         textarea: row.info
       };
     },
@@ -568,7 +588,7 @@ export default {
                 if (res.data.affectedRows) {
                   this.modelShow = false;
                   this.isEdit = true;
-                  this.formItem.textarea='';
+                  this.formItem.textarea = "";
                   this.$Message.success("修改成功");
                   this.$refs[name].resetFields();
                   this.searchListData();

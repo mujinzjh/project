@@ -123,9 +123,12 @@ export default {
         })
         .then(res => {
           console.log(res);
+           var arr = dataResult;
+           arr.forEach(el=>{
+             el.saleNum=0;
+           })
           if (res.status === 200) {
-            if (res && res.data) {
-              var arr = dataResult;
+            if (res && res.data&&res.data.length>0) {
               for (let i = 0; i < arr.length; i++) {
                 for (let j = 0; j < res.data.length; j++) {
                   if (i === j) {

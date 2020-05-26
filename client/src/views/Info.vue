@@ -73,42 +73,50 @@
         </div>
       </div>
       <div v-if="merchant" class="merchant"></div>
+
       <div v-if="comment" class="comment">
-        <van-row v-for="(item, index) in commentlist" :key="index" class="comment-c">
-          <van-col span="3" class="avtor">
-            <img :src="item.avator" alt />
-          </van-col>
-          <van-col span="14" class="content">
-            <p>{{item.username}}</p>
-            <p class="comment-time-name">
-              <span>发布于{{item.time}}</span>|
-              <span class="comment-name" :title="item.name">{{item.name}}</span>
-            </p>
-            <p>{{item.content}}</p>
-          </van-col>
-          <van-col span="7" class="show-time">
-            <div style="display:inline-block">
-              <van-button
-                type="default"
-                size="mini"
-                @click="onGoodJobClick(item.navStatus,item.cmid,item.gid,item.likeNum,item.lid)"
-                :id="index"
-                :style="{'color':item.navStatus?'orange':''}"
-              >
-                <van-icon name="good-job-o" />
-                <span v-text="item.navStatus?'已点赞':'点赞'"></span>
-                <span v-if="item.likeNum!==0">({{item.likeNum}})</span>
-              </van-button>
-              <van-button
-                type="default"
-                size="mini"
-                @click="onDeleteCommentClick(item.cmid,item.uid)"
-              >
-                <van-icon name="delete" />删除
-              </van-button>
-            </div>
-          </van-col>
-        </van-row>
+        <div v-if="commentlist.length>0">
+          <van-row v-for="(item, index) in commentlist" :key="index" class="comment-c">
+            <van-col span="3" class="avtor">
+              <img :src="item.avator" alt />
+            </van-col>
+            <van-col span="14" class="content">
+              <p>{{item.username}}</p>
+              <p class="comment-time-name">
+                <span>发布于{{item.time}}</span> |
+                <span class="comment-name" :title="item.name">{{item.name}}</span>
+              </p>
+              <p>{{item.content}}</p>
+            </van-col>
+            <van-col span="7" class="show-time">
+              <div style="display:inline-block">
+                <van-button
+                  type="default"
+                  size="mini"
+                  @click="onGoodJobClick(item.navStatus,item.cmid,item.gid,item.likeNum,item.lid)"
+                  :id="index"
+                  :style="{'color':item.navStatus?'orange':''}"
+                >
+                  <van-icon name="good-job-o" />
+                  <span v-text="item.navStatus?'已点赞':'点赞'"></span>
+                  <span v-if="item.likeNum!==0">({{item.likeNum}})</span>
+                </van-button>
+                <van-button
+                  type="default"
+                  size="mini"
+                  @click="onDeleteCommentClick(item.cmid,item.uid)"
+                >
+                  <van-icon name="delete" />删除
+                </van-button>
+              </div>
+            </van-col>
+          </van-row>
+        </div>
+        <div v-else>
+          <div class="no-comment">
+            <p>暂无评论信息</p>
+          </div>
+        </div>
       </div>
     </div>
     <!-- <shopping-bar></shopping-bar> -->
@@ -277,14 +285,14 @@ export default {
           .then(res => {
             if (res.status === 200) {
               if (res && res.data && res.data.affectedRows === 1) {
-                Toast.success("删除当前评论成功");
+                Toast.success("删除成功");
                 that.reload();
               }
             }
           })
           .catch(err => {});
       } else {
-        Toast.fail("删除失败，不能删除他人评论");
+        Toast.fail("删除失败,不能删除他人评论");
       }
     },
     onGoodJobClick(status, cmid, gid, goodNumber, lid) {
@@ -440,8 +448,8 @@ export default {
       return value;
     },
     changeInfo() {
-      var gid=this.$route.query.gid;
-       this.axios
+      var gid = this.$route.query.gid;
+      this.axios
         .post("/add/addgoods", {
           uid: localStorage.getItem("uid"),
           gid: gid
@@ -449,9 +457,9 @@ export default {
         .then(response => {
           if (response.data.code == 1) {
             this.$router.push({
-            path: "/order",
-            query: { gid: gid }
-      });
+              path: "/order",
+              query: { gid: gid }
+            });
           }
         })
         .catch(function(error) {
@@ -697,10 +705,14 @@ export default {
   width: 56px;
   text-align: center;
 }
-.commodity {
+.commodity,.no-comment {
   height: 300px;
   text-indent: 2em;
   /* background-color: red; */
+}
+.no-comment{
+  font-size: 12px;
+  text-align:center;
 }
 .merchant {
   height: 300px;

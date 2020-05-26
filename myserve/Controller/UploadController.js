@@ -25,19 +25,13 @@ router.post('/', upload.single('file'), (req, res) => {
        "msg":'',
        "data":{}
    }
-
    data.data.src=hostname+"uploads/"+req.file.filename;
    res.json(data);
 })
-
-
 router.post('/mul', upload.array('file'), (req, res) => {
-  console.log(req.files);
-  
    let data= {
         "errno": 0,
-        "data": []
-        
+        "data": []  
     }
     req.files.forEach(el=>{
         data.data.push(hostname+"uploads/"+el.filename)
