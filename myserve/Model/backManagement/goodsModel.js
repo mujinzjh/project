@@ -8,7 +8,7 @@ class goodsModel extends DbBase{
     }
     select(page,pageSize,callback){
         let startpage=(page-1)*pageSize;
-        let sql=`select * from ${this.table}  e,${this.table1} d where e.cid=d.cid limit `+startpage+','+pageSize+';',
+        let sql=`select * from ${this.table}  e,${this.table1} d where e.cid=d.cid  ORDER BY e.addtimes DESC  limit ${startpage},${pageSize};`,
         sqlCount=`select count(*) as nums from ${this.table}`;
         this.mydb.query(sql+sqlCount,(err,results)=>{
             if(err){
@@ -18,7 +18,6 @@ class goodsModel extends DbBase{
               callback(results);
             }
         })
-
     }
     insertGoods(data,callback){
        let fieldstr='',field='';
